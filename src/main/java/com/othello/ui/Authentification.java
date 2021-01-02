@@ -166,7 +166,7 @@ public class Authentification extends javax.swing.JFrame
                     name = rs2.getString("username");
                     System.out.println(name);
                     if(name.equals(userName))
-                    JOptionPane.showMessageDialog(null, "Ce nom déjà existe!");
+                    JOptionPane.showMessageDialog(null, "Le mode de pass est incorrect!");
                     nomTxt.setText("");
                      mdpTxt.setText("");
                 } else{
