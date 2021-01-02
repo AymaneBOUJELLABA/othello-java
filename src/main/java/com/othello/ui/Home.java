@@ -59,10 +59,10 @@ public class Home extends javax.swing.JFrame {
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         int a = JOptionPane.showConfirmDialog(null, "Est ce que vous êtes sur ?");
         if (a == JOptionPane.YES_OPTION) {
-                  dispose();
-                  Authentification auth = new Authentification();
-                  auth.setVisible(true);
-              }
+            dispose();
+            Authentification auth = new Authentification();
+            auth.setVisible(true);
+        }
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     /**

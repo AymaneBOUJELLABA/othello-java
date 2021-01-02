@@ -26,25 +26,25 @@ public class Authentification extends javax.swing.JFrame {
     ResultSet rs2 = null;
     PreparedStatement ps = null;
     EncryptPassword encryptPwd;
-    
-    
+
+
     public Authentification() {
         initComponents();
-        //--------------------- pour se connecter à la BDD ---------------------------  
+        //--------------------- pour se connecter à la BDD ---------------------------
            try
-       { 
-               Class.forName("com.mysql.cj.jdbc.Driver");	 
+       {
+               Class.forName("com.mysql.cj.jdbc.Driver");
                connection = DriverManager.getConnection("jdbc:mysql://localhost/othello_game" ,"root","");
                System.out.println("Connexion effective !");
-              
+
        }
        catch(ClassNotFoundException | SQLException ex)
        {
            System.err.println(ex);
-       } 
+       }
     }
 
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -131,10 +131,10 @@ public class Authentification extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        
+
         String userName = this.nomTxt.getText();
         String password = this.mdpTxt.getText();
-                
+
         try {
             try {
                 encryptPwd = new EncryptPassword();
@@ -145,14 +145,14 @@ public class Authentification extends javax.swing.JFrame {
             ps.setString(1, userName);
             ps.setString(2, encryptPwd.encrypt(password));
             rs = ps.executeQuery();
-            
+
             if(rs.next()){
                 dispose();  //fermer la page d'authentification
                 Home homeFrame = new Home(userName);
                 homeFrame.setVisible(true);
                 JOptionPane.showMessageDialog(null, "Authentification avec succès!");
-                
-            } else{           
+
+            } else{
                 String name ;
                 String query2 = "select username from users where username='"+userName+"'";
                 rs2 = ps.executeQuery(query2);
@@ -173,10 +173,10 @@ public class Authentification extends javax.swing.JFrame {
                     Home homeFrame = new Home(userName);
                     homeFrame.setVisible(true);
                     JOptionPane.showMessageDialog(null, "Authentification avec succès!");
-                }              
-                
+                }
+
             }
-                        
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -187,8 +187,8 @@ public class Authentification extends javax.swing.JFrame {
         mdpTxt.setText("");
     }//GEN-LAST:event_resetBtnActionPerformed
 
-    
-    
+
+
     /**
      * @param args the command line arguments
      */
@@ -196,7 +196,7 @@ public class Authentification extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

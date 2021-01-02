@@ -8,7 +8,7 @@ import javax.crypto.spec.DESedeKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class EncryptPassword {
-    
+
     private static final String UNICODE_FORMAT = "UTF8";
     public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
     private KeySpec ks;
@@ -18,8 +18,8 @@ public class EncryptPassword {
     private String myEncryptionKey;
     private String myEncryptionScheme;
     SecretKey key;
-    
-     public EncryptPassword() throws Exception {
+
+    public EncryptPassword() throws Exception {
         myEncryptionKey = "ThisIsSpartaThisIsSparta";
         myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
         arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
@@ -28,7 +28,6 @@ public class EncryptPassword {
         cipher = Cipher.getInstance(myEncryptionScheme);
         key = skf.generateSecret(ks);
     }
-
 
     public String encrypt(String unencryptedString) {
         String encryptedString = null;
@@ -43,20 +42,19 @@ public class EncryptPassword {
         return encryptedString;
     }
 
-
     public String decrypt(String encryptedString) {
-        String decryptedText=null;
+        String decryptedText = null;
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] encryptedText = Base64.decodeBase64(encryptedString);
             byte[] plainText = cipher.doFinal(encryptedText);
-            decryptedText= new String(plainText);
+            decryptedText = new String(plainText);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return decryptedText;
     }
-    
+
     /*public static void main(String args []) throws Exception
     {
         EncryptPassword p = new EncryptPassword();
