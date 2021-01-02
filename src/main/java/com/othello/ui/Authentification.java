@@ -17,24 +17,26 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Rabab
+ * 
  */
-public class Authentification extends javax.swing.JFrame {
+public class Authentification extends javax.swing.JFrame
+{
 
     Connection connection = null;
     ResultSet rs = null;
     ResultSet rs2 = null;
     PreparedStatement ps = null;
     EncryptPassword encryptPwd;
-
-
-    public Authentification() {
+    
+    
+    public Authentification()
+    {
         initComponents();
-        //--------------------- pour se connecter à la BDD ---------------------------
-           try
-       {
-               Class.forName("com.mysql.cj.jdbc.Driver");
-               connection = DriverManager.getConnection("jdbc:mysql://localhost/othello_game" ,"root","");
+        //--------------------- pour se connecter à la BDD ---------------------------  
+       try
+       { 
+               Class.forName("com.mysql.cj.jdbc.Driver");	 
+               connection = DriverManager.getConnection("jdbc:mysql://localhost/othello_game?serverTimezone=UTC" ,"root","");
                System.out.println("Connexion effective !");
 
        }
@@ -47,7 +49,8 @@ public class Authentification extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         nomTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -69,7 +72,7 @@ public class Authentification extends javax.swing.JFrame {
         jLabel3.setText("Authentification");
 
         loginBtn.setText("S'authentifier");
-        loginBtn.addActionListener(new java.awt.event.ActionListener() {
+        loginBtn.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginBtnActionPerformed(evt);
             }
@@ -134,9 +137,11 @@ public class Authentification extends javax.swing.JFrame {
 
         String userName = this.nomTxt.getText();
         String password = this.mdpTxt.getText();
-
-        try {
-            try {
+                
+        try 
+        {
+            try 
+            {
                 encryptPwd = new EncryptPassword();
             } catch (Exception ex) {
                 Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,8 +156,9 @@ public class Authentification extends javax.swing.JFrame {
                 Home homeFrame = new Home(userName);
                 homeFrame.setVisible(true);
                 JOptionPane.showMessageDialog(null, "Authentification avec succès!");
-
-            } else{
+                
+            } else
+            {           
                 String name ;
                 String query2 = "select username from users where username='"+userName+"'";
                 rs2 = ps.executeQuery(query2);
@@ -160,7 +166,7 @@ public class Authentification extends javax.swing.JFrame {
                     name = rs2.getString("username");
                     System.out.println(name);
                     if(name.equals(userName))
-                    JOptionPane.showMessageDialog(null, "Ce nom déjà existe!");
+                    JOptionPane.showMessageDialog(null, "Le mode de pass est incorrect!");
                     nomTxt.setText("");
                      mdpTxt.setText("");
                 } else{
