@@ -72,4 +72,8 @@ public class Case {
     public void setIsPossibleMove(boolean isPossibleMove) {
         this.isPossibleMove = isPossibleMove;
     }
+    
+    public boolean isEmpty(){
+        return getValue() == CaseValue.EMPTY;
+    }
 }

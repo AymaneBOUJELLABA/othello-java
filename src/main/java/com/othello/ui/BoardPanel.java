@@ -19,8 +19,7 @@ import java.awt.event.MouseEvent;
  * @author macbookpro
  */
 public class BoardPanel extends javax.swing.JPanel {
-    
-    
+
     public Case[][] board;
     public CaseValue turn;
 
@@ -33,99 +32,127 @@ public class BoardPanel extends javax.swing.JPanel {
         initComponents();
         calculatePossibleMoves();
         addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    int j = e.getX() / getCaseWidth();
-                    int i = e.getY() / getCaseHeight();
-                    if(!board[i][j].isEmpty()) return;
-                    board[i][j].setValue(turn);
-                    turn = turn == CaseValue.BLACK ? CaseValue.WHITE : CaseValue.BLACK;
-                    calculatePossibleMoves();
-                    repaint();
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int j = e.getX() / getCaseWidth();
+                int i = e.getY() / getCaseHeight();
+                if (!board[i][j].isEmpty()) {
+                    return;
                 }
-            });
+                board[i][j].setValue(turn);
+                flipPieces(i, i);
+                turn = turn == CaseValue.BLACK ? CaseValue.WHITE : CaseValue.BLACK;
+                calculatePossibleMoves();
+                repaint();
+            }
+        });
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
         doDrawing(g);
     }
-    
+
     private void doDrawing(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        
+
         // draw the green bg
-        g2d.setColor(new Color(32,144,103));
+        g2d.setColor(new Color(32, 144, 103));
         g2d.fillRect(0, 0, getWidth(), getHeight());
-        
+
         // draw the cases
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 int x = j * getCaseWidth();
-                int y  = i * getCaseHeight();
+                int y = i * getCaseHeight();
                 g2d.setColor(Color.black);
-                g2d.drawRect(x,y, getCaseWidth(), getCaseHeight());
-                if(board[i][j].getValue() == CaseValue.EMPTY) {
-                    if(board[i][j].isPossibleMove())
+                g2d.drawRect(x, y, getCaseWidth(), getCaseHeight());
+                if (board[i][j].getValue() == CaseValue.EMPTY) {
+                    if (board[i][j].isPossibleMove()) {
                         g2d.drawOval(x + 10, y + 10, getCaseWidth() - 20, getCaseHeight() - 20);
+                    }
                     continue;
                 }
-                
+
                 g2d.setColor(board[i][j].getValue() == CaseValue.BLACK ? Color.black : Color.white);
                 g2d.fillOval(x + 10, y + 10, getCaseWidth() - 20, getCaseHeight() - 20);
             }
         }
     }
-    
-    public int getCaseWidth(){
+
+    public int getCaseWidth() {
         return getWidth() / 8;
     }
-    
-    public int getCaseHeight(){
+
+    public int getCaseHeight() {
         return getHeight() / 8;
     }
-    
-    public void calculatePossibleMoves(){
+
+    public void flipPieces(int row, int col) {
+        for (int dRow = -1; dRow <= 1; dRow++) {
+            for (int dCol = -1; dCol <= 1; dCol++) {
+                if (checkDir(row, col, dRow, dCol)) {
+                    for (int i = row + dRow, j = col + dCol; i < 8 && i >= 0 && j < 8 && j >= 0; i += dRow, j += dCol) {
+                        // We reached the borders
+                        if(board[i][j].isEmpty()) break;
+                        System.out.println("Found cell to flip " + i + ", " + j);
+                        board[i][j].setValue(turn);
+                    }
+                }
+            }
+        }
+    }
+
+    public void calculatePossibleMoves() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(!board[i][j].isEmpty()) continue;
+                if (!board[i][j].isEmpty()) {
+                    continue;
+                }
                 board[i][j].setIsPossibleMove(checkCase(i, j));
             }
         }
-        
+
     }
-   
-    private boolean checkCase(int i, int j){
-        for(int k = -1; k <= 1; k++) {
+
+    private boolean checkCase(int i, int j) {
+        for (int k = -1; k <= 1; k++) {
             for (int m = -1; m <= 1; m++) {
-                if(checkDir(i, j, k, m)){
+                if (checkDir(i, j, k, m)) {
                     return true;
                 }
             }
         }
         return false;
     }
-    
-    private boolean checkDir(int row, int col, int dRow, int dCol){
+
+    private boolean checkDir(int row, int col, int dRow, int dCol) {
         boolean foundOther = false;
         for (int i = row + dRow, j = col + dCol; i < 8 && i >= 0 && j < 8 && j >= 0; i += dRow, j += dCol) {
-                // We reached the borders
-                if(board[i][j].isEmpty()) return false;
-                if(!isSafe(i + dRow,j + dCol)) continue;
-                
-                if(board[i][j].getValue() != turn) foundOther = true;
-                if(board[i + dRow][j + dCol].isEmpty() && board[i][j].getValue() == turn && foundOther){
-                    return true;
-                }
+            // We reached the borders
+            if (board[i][j].isEmpty()) {
+                return false;
+            }
+            if (!isSafe(i + dRow, j + dCol)) {
+                continue;
+            }
+
+            if (board[i][j].getValue() != turn) {
+                foundOther = true;
+            }
+            if (board[i + dRow][j + dCol].isEmpty() && board[i][j].getValue() == turn && foundOther) {
+                return true;
+            }
         }
         return false;
     }
-    
-    private boolean isSafe(int i, int j){
+
+    private boolean isSafe(int i, int j) {
         return i < 8 && j < 8 && i >= 0 && j >= 0;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
