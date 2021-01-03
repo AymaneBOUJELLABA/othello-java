@@ -105,8 +105,8 @@ public class BoardFrame extends javax.swing.JFrame {
                 // Adding the initial pieces
                 defaultBoard[3][3].setValue(CaseValue.WHITE);
                 defaultBoard[3][4].setValue(CaseValue.BLACK);
-                defaultBoard[4][3].setValue(CaseValue.WHITE);
-                defaultBoard[4][4].setValue(CaseValue.BLACK);
+                defaultBoard[4][3].setValue(CaseValue.BLACK);
+                defaultBoard[4][4].setValue(CaseValue.WHITE);
                 
                 JFrame frame = new BoardFrame(defaultBoard);
                 frame.setSize(new Dimension(WIDTH, HEIGHT));
