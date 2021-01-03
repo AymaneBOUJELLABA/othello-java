@@ -73,13 +73,12 @@ public class OthelloGame
 		{
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	public static OthelloGame loadgame(String gamename)
 	{
 		try
-		{	
+		{
 			String query = "SELECT id,name,username,date,type,moves FROM game WHERE name=?";
 			PreparedStatement stmt = cnx.prepareStatement(query);
 			

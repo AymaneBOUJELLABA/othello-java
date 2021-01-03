@@ -9,7 +9,8 @@ package com.othello.entities;
  *
  * @author macbookpro
  */
-public class Case {
+public class Case 
+{
     
     private int indexX,indexY;
     private CaseValue value;
