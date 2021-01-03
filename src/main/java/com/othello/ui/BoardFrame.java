@@ -9,7 +9,11 @@ import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -46,11 +50,25 @@ public class BoardFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
-
+        
+        jPanel2 = new JPanel();
+        jPanel2.setLayout(new BorderLayout());
+        
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Othello");
-        jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        
+        btn1 = new JButton("save");
+        btn2 = new JButton("Exit");
+        JPanel jPanel3 = new JPanel();
+        jPanel3.add(btn1);
+        jPanel3.add(btn2);
+        
+        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jPanel3, java.awt.BorderLayout.EAST);
+        
+        
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,7 +138,8 @@ public class BoardFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel1,jPanel2;
+    private JButton btn1,btn2;
     
     // End of variables declaration//GEN-END:variables
 }

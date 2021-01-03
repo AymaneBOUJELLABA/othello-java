@@ -28,7 +28,6 @@ public class Authentification extends javax.swing.JFrame
     PreparedStatement ps = null;
     EncryptPassword encryptPwd;
     
-    
     public Authentification()
     {
         initComponents();
