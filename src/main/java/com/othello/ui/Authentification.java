@@ -137,7 +137,13 @@ public class Authentification extends javax.swing.JFrame
 
         String userName = this.nomTxt.getText();
         String password = this.mdpTxt.getText();
-                
+        
+        if(userName.isEmpty() || password.isEmpty())
+        {
+        	 JOptionPane.showMessageDialog(null, "username ou mdp sont vide!");
+        	 return;
+        }
+        
         try 
         {
             try 
