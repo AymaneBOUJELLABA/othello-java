@@ -125,7 +125,9 @@ public class Home extends javax.swing.JFrame
 		btnNewButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
-			{	 
+			{	
+				dispose();
+				
 				Case[][] defaultBoard = new Case[8][8];
                 for (int i = 0; i < 8; i++) 
                 {
