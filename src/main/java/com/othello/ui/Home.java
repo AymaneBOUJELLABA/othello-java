@@ -72,7 +72,10 @@ public class Home extends javax.swing.JFrame
         {
         	public void actionPerformed(ActionEvent e) 
         	{
-        		setContentPane(ChoicePanel());
+        		JPanel gamep = ChoicePanel();
+        		//gamep.revalidate();
+        		
+        		setContentPane(gamep);
         		pack();
         		
         	}
@@ -111,7 +114,7 @@ public class Home extends javax.swing.JFrame
     	
 		JPanel Gamepanel = new JPanel();
 		Gamepanel.setLayout(null);
-		
+		Gamepanel.setPreferredSize(new Dimension(600, 600));
 		JButton btnNewButton = new JButton("Joueur vs IA");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
