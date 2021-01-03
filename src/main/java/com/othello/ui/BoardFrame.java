@@ -25,7 +25,9 @@ public class BoardFrame extends javax.swing.JFrame {
     
     public BoardFrame(Case[][] board) {
         initComponents();
+        this.jPanel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.jPanel1.add(new BoardPanel(board),BorderLayout.CENTER);
+        
     }
 
     /**
@@ -39,7 +41,7 @@ public class BoardFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-
+        jPanel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());

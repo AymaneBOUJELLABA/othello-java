@@ -9,6 +9,7 @@ import java.awt.*;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,6 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import com.othello.entities.Case;
+import com.othello.entities.CaseValue;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -41,6 +46,7 @@ public class Home extends javax.swing.JFrame
     	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
         panel = new JPanel();
+        panel.setPreferredSize(new Dimension(700, 400));
         
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -114,16 +120,59 @@ public class Home extends javax.swing.JFrame
     	
 		JPanel Gamepanel = new JPanel();
 		Gamepanel.setLayout(null);
-		Gamepanel.setPreferredSize(new Dimension(600, 600));
+		Gamepanel.setPreferredSize(new Dimension(550, 350));
 		JButton btnNewButton = new JButton("Joueur vs IA");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{	 
+				Case[][] defaultBoard = new Case[8][8];
+                for (int i = 0; i < 8; i++) 
+                {
+                    for (int j = 0; j < 8; j++) 
+                    {
+                        defaultBoard[i][j] = new Case(i,j);
+                    }
+                }
+                
+                // Adding the initial pieces
+                defaultBoard[3][3].setValue(CaseValue.WHITE);
+                defaultBoard[3][4].setValue(CaseValue.BLACK);
+                defaultBoard[4][3].setValue(CaseValue.WHITE);
+                defaultBoard[4][4].setValue(CaseValue.BLACK);
+                
+                BoardFrame BF =new BoardFrame(defaultBoard);
+                BF.setVisible(true);
 			}
 		});
 		btnNewButton.setBounds(60, 135, 122, 23);
 		Gamepanel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Joueur vs Joueur");
+		btnNewButton_1.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Case[][] defaultBoard = new Case[8][8];
+                for (int i = 0; i < 8; i++) 
+                {
+                    for (int j = 0; j < 8; j++) 
+                    {
+                        defaultBoard[i][j] = new Case(i,j);
+                    }
+                }
+                
+                // Adding the initial pieces
+                defaultBoard[3][3].setValue(CaseValue.WHITE);
+                defaultBoard[3][4].setValue(CaseValue.BLACK);
+                defaultBoard[4][3].setValue(CaseValue.WHITE);
+                defaultBoard[4][4].setValue(CaseValue.BLACK);
+                
+                BoardFrame BF =new BoardFrame(defaultBoard);
+                BF.setVisible(true);
+			}
+		});
 		btnNewButton_1.setBounds(316, 135, 135, 23);
 		Gamepanel.add(btnNewButton_1);
 		
