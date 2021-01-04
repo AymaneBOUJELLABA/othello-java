@@ -1,5 +1,6 @@
 package com.othello.ui;
 
+import com.othello.classes.OthelloGame;
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import java.awt.Color;
@@ -12,15 +13,21 @@ public class BoardPanel extends javax.swing.JPanel {
 
     public Case[][] board;
     public CaseValue turn;
+    public OthelloGame gamedata;
 
-    public BoardPanel(Case[][] board) {
+    public BoardPanel(Case[][] board,OthelloGame gamedata)
+    {
         this.board = board;
         this.turn = CaseValue.BLACK;
+        this.gamedata = gamedata;
+        
         initComponents();
         calculatePossibleMoves();
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(MouseEvent e)
+            {
                 int j = e.getX() / getCaseWidth();
                 int i = e.getY() / getCaseHeight();
                 playTurn(i, j);
@@ -49,8 +56,10 @@ public class BoardPanel extends javax.swing.JPanel {
                 int y = i * getCaseHeight();
                 g2d.setColor(Color.black);
                 g2d.drawRect(x, y, getCaseWidth(), getCaseHeight());
-                if (board[i][j].getValue() == CaseValue.EMPTY) {
-                    if (board[i][j].isPossibleMove()) {
+                if (board[i][j].getValue() == CaseValue.EMPTY)
+                {
+                    if (board[i][j].isPossibleMove())
+                    {
                         g2d.drawOval(x + 10, y + 10, getCaseWidth() - 20, getCaseHeight() - 20);
                     }
                     continue;
@@ -70,13 +79,19 @@ public class BoardPanel extends javax.swing.JPanel {
         return getHeight() / 8;
     }
 
-    public void playTurn(int i, int j) {
-        if (!board[i][j].isEmpty() || !board[i][j].isPossibleMove()) {
+    public void playTurn(int i, int j)
+    {
+        if (!board[i][j].isEmpty() || !board[i][j].isPossibleMove()){
             return;
         }
+        
         board[i][j].setValue(turn);
+        //save move
+        gamedata.addMove(turn,i,j);
+        
         flipPieces(i, j);
         switchTurn();
+        
         calculatePossibleMoves();
         repaint();
     }
@@ -154,7 +169,13 @@ public class BoardPanel extends javax.swing.JPanel {
     private boolean isSafe(int i, int j) {
         return i < 8 && j < 8 && i >= 0 && j >= 0;
     }
-
+    
+    public Case[][] getBoard()
+    {
+    	return this.board;
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

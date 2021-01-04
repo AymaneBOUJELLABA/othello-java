@@ -15,13 +15,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import com.othello.classes.OthelloGame;
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 /**
@@ -32,9 +36,18 @@ public class Home extends javax.swing.JFrame
 {
     
     private JPanel panel;
+    private OthelloGame game;
+    String username;
 	public Home(String userName) 
 	{
         initComponents();
+        username = userName;
+        game= new OthelloGame();        
+        game.setOwner(userName);
+        game.setName(userName+" game");
+        
+        System.out.println("creating a new gamedata : " + game.getName());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -90,11 +103,53 @@ public class Home extends javax.swing.JFrame
         panel.add(newGame);
         
         JButton LoadGame = new JButton("Continue");
+        LoadGame.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		String name = (String)JOptionPane.showInputDialog("Veuillez inserer le nom du jeu : ");
+        		if(name!=null)
+        		{
+        			
+        			game = OthelloGame.loadgame(name);
+        			System.out.println("loading game : " + game.getName());
+        			
+        			Case[][] board = game.getBoardState();
+        			
+        			dispose();
+        			
+        			 BoardFrame BF =new BoardFrame(board,game);
+                     BF.setVisible(true);
+        		}
+        			
+        		else
+        			JOptionPane.showMessageDialog(null, "no game found!");
+        		
+        		pack();
+        	}
+        });
         LoadGame.setBounds(258, 164, 137, 23);
         panel.add(LoadGame);
         
         JButton archives = new JButton("Archives");
         archives.setBounds(258, 223, 137, 23);
+        archives.addActionListener(new ActionListener() 
+        {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				ArrayList<String> games = OthelloGame.getGames(username);
+				
+				JPanel gamelist = showGameList(games);
+				JFrame f = new JFrame("Game list");
+				
+				f.add(gamelist);
+				f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				f.setVisible(true);
+				f.pack();
+				pack();
+			}
+		});
         panel.add(archives);
         
         JButton Deconnexion = new JButton("Déconnexion");
@@ -127,7 +182,9 @@ public class Home extends javax.swing.JFrame
 			public void actionPerformed(ActionEvent e) 
 			{	
 				dispose();
-				
+				//1 => pvAI
+				game.setType(1);
+				System.out.println("PvAI choosed : " + game.getType());
 				Case[][] defaultBoard = new Case[8][8];
                 for (int i = 0; i < 8; i++) 
                 {
@@ -136,14 +193,13 @@ public class Home extends javax.swing.JFrame
                         defaultBoard[i][j] = new Case(i,j);
                     }
                 }
-                
                 // Adding the initial pieces
                 defaultBoard[3][3].setValue(CaseValue.WHITE);
                 defaultBoard[3][4].setValue(CaseValue.BLACK);
                 defaultBoard[4][3].setValue(CaseValue.WHITE);
                 defaultBoard[4][4].setValue(CaseValue.BLACK);
                 
-                BoardFrame BF =new BoardFrame(defaultBoard);
+                BoardFrame BF =new BoardFrame(defaultBoard,game);
                 BF.setVisible(true);
 			}
 		});
@@ -156,6 +212,10 @@ public class Home extends javax.swing.JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				//0 => pvp
+				game.setType(0);
+				System.out.println("PvP choosed : " + game.getType());
+
 				Case[][] defaultBoard = new Case[8][8];
                 for (int i = 0; i < 8; i++) 
                 {
@@ -171,8 +231,9 @@ public class Home extends javax.swing.JFrame
                 defaultBoard[4][3].setValue(CaseValue.WHITE);
                 defaultBoard[4][4].setValue(CaseValue.BLACK);
                 
-                BoardFrame BF =new BoardFrame(defaultBoard);
+                BoardFrame BF =new BoardFrame(defaultBoard,game);
                 BF.setVisible(true);
+                
 			}
 		});
 		btnNewButton_1.setBounds(316, 135, 135, 23);
@@ -223,6 +284,43 @@ public class Home extends javax.swing.JFrame
 		retour.setBounds(23, 268, 128, 23);
 		Gamepanel.add(retour);
 		return Gamepanel;
+    }
+    
+    private JPanel showGameList(ArrayList<String> games)
+    {
+    	 // Frame initiallization 
+        JPanel gamelistPanel = new JPanel(); 
+        gamelistPanel.setLayout(new BorderLayout());
+        
+        // Data to be displayed in the JTable 
+        String[][] data = new String[games.size()][2];
+        
+        for(int i=0; i<games.size();i++)
+        {
+        	//game name
+        	data[i][0] = games.get(i);
+        	
+        	if(OthelloGame.isWon(data[i][0]))
+        		data[i][1] = "WIN"; //gamestate
+        	else
+        		data[i][1] = "LOOSE";
+        }
+       
+        // Column Names 
+        String[] columnNames = { "Game Name", "Game State"}; 
+  
+        // Initializing the JTable 
+        JTable j = new JTable(data, columnNames); 
+        
+        // adding it to JScrollPane 
+        JScrollPane sp = new JScrollPane(j); 
+        gamelistPanel.add(sp,BorderLayout.CENTER); 
+        // Frame Size 
+        gamelistPanel.setSize(500, 200); 
+        // Frame Visible = true 
+        gamelistPanel.setVisible(true); 
+        
+        return gamelistPanel;
     }
 
     /**

@@ -156,7 +156,8 @@ public class Authentification extends javax.swing.JFrame
             ps.setString(2, encryptPwd.encrypt(password));
             rs = ps.executeQuery();
 
-            if(rs.next()){
+            if(rs.next())
+            {
                 dispose();  //fermer la page d'authentification
                 Home homeFrame = new Home(userName);
                 homeFrame.setVisible(true);

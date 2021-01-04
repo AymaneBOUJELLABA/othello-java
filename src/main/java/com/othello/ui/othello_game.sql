@@ -34,8 +34,10 @@ CREATE TABLE IF NOT EXISTS `game` (
   `name` varchar(30) NOT NULL,
   `username` varchar(50) NOT NULL,
   `date` date NOT NULL,
-  `moves` varchar(255) NOT NULL,
+  `moves` varchar(255) NOT NULL, 
   `type` int(11) NOT NULL,
+  `isWon` BOOLEAN NOT NULL,
+  `state` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   KEY `username_fk` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
@@ -43,12 +45,6 @@ CREATE TABLE IF NOT EXISTS `game` (
 --
 -- Dumping data for table `game`
 --
-
-INSERT INTO `game` (`id`, `name`, `username`, `date`, `moves`, `type`) VALUES
-(2, 'game1', 'aymane', '2021-01-02', 'B23,W11,B55,W31', 0),
-(3, 'newgame3', 'Akkar', '2021-01-01', 'B66,W33,B22,W11,B46,W74', 1),
-(4, 'editedGame', 'aymane', '2021-01-02', 'B23,W11,B55,W31', 0),
-(5, 'editedGame', 'aymane', '2021-01-02', 'B23,W11,B55,W31', 0);
 
 -- --------------------------------------------------------
 

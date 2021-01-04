@@ -5,6 +5,7 @@
  */
 package com.othello.ui;
 
+import com.othello.classes.OthelloGame;
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import java.awt.BorderLayout;
@@ -13,6 +14,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -26,11 +28,27 @@ public class BoardFrame extends javax.swing.JFrame {
      */
     
     public static int WIDTH = 700, HEIGHT = 655;
+    private OthelloGame gamedata;
+    private BoardPanel boardpanel;
     
-    public BoardFrame(Case[][] board) {
+    public BoardFrame(Case[][] board)
+    {    	
         initComponents();
+        
         this.jPanel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.jPanel1.add(new BoardPanel(board),BorderLayout.CENTER);
+        
+        boardpanel = new BoardPanel(board,null);
+        this.jPanel1.add(boardpanel,BorderLayout.CENTER);
+    }
+    public BoardFrame(Case[][] board, OthelloGame game)
+    {
+        initComponents();
+        
+        this.jPanel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        gamedata = game;
+        
+        boardpanel = new BoardPanel(board, gamedata);
+        this.jPanel1.add(boardpanel,BorderLayout.CENTER);
         
     }
 
@@ -58,8 +76,10 @@ public class BoardFrame extends javax.swing.JFrame {
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Sauvegarder");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jMenuItem1ActionPerformed(evt);
             }
         });
@@ -92,14 +112,25 @@ public class BoardFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+    	String gamename = (String)JOptionPane.showInputDialog("Veuillez saisir un nom : ");
+    	if(gamename!=null)
+    		gamedata.setName(gamename);
+    	
+    	gamedata.setStatefromBoard(boardpanel.getBoard());
+    	gamedata.savegame();
+    	
+    	System.out.println("saving game :");
+    	System.out.println(gamedata);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
