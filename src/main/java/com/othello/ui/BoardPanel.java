@@ -4,6 +4,7 @@ import com.othello.classes.OthelloGame;
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
@@ -13,23 +14,20 @@ public class BoardPanel extends javax.swing.JPanel {
 
     public Case[][] board;
     public CaseValue turn;
+    static int SCORE_HEIGHT = 75;
     public OthelloGame gamedata;
 
-    public BoardPanel(Case[][] board,OthelloGame gamedata)
-    {
+    public BoardPanel(Case[][] board,OthelloGame gamedata){
         this.board = board;
         this.turn = CaseValue.BLACK;
         this.gamedata = gamedata;
-        
         initComponents();
         calculatePossibleMoves();
-        addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseReleased(MouseEvent e)
-            {
+        addMouseListener(new MouseAdapter(){
+            @Override 
+           public void mouseReleased(MouseEvent e) {
                 int j = e.getX() / getCaseWidth();
-                int i = e.getY() / getCaseHeight();
+                int i = (e.getY() - SCORE_HEIGHT) / getCaseHeight();
                 playTurn(i, j);
             }
         });
@@ -48,7 +46,28 @@ public class BoardPanel extends javax.swing.JPanel {
         // draw the green bg
         g2d.setColor(new Color(32, 144, 103));
         g2d.fillRect(0, 0, getWidth(), getHeight());
+        
+        g2d.setColor(Color.black);
+        g2d.fillOval(getWidth()/2 - getCaseWidth()/2 - 35, 10, getCaseWidth() - 20, getCaseHeight() - 20);
+        
+        g2d.setColor(Color.white);
+        g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,  30));
+        g2d.drawString("" + getBoardCount(CaseValue.BLACK), getWidth()/2 - getCaseWidth()/2 - 10, 45);
+        
+        g2d.fillOval(getWidth()/2 + getCaseWidth()/2 - 35, 10, getCaseWidth() - 20, getCaseHeight() - 20);
+        
+        g2d.setColor(Color.black);
+        g2d.drawString("" + getBoardCount(CaseValue.WHITE), getWidth()/2 + getCaseWidth()/2 - 10, 45);
+        
+        g2d.setColor(turn == CaseValue.BLACK ? Color.black : Color.white);
+        
+        g2d.fillOval(getWidth() - 70, 10, getCaseWidth() - 20, getCaseHeight() - 20);
+        g2d.setColor(turn == CaseValue.WHITE ? Color.black : Color.white);
+        g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,  16));
+        g2d.drawString("Tour", getWidth() - 55, 35);
 
+        
+        g2d.translate(0, SCORE_HEIGHT);
         // draw the cases
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -56,10 +75,8 @@ public class BoardPanel extends javax.swing.JPanel {
                 int y = i * getCaseHeight();
                 g2d.setColor(Color.black);
                 g2d.drawRect(x, y, getCaseWidth(), getCaseHeight());
-                if (board[i][j].getValue() == CaseValue.EMPTY)
-                {
-                    if (board[i][j].isPossibleMove())
-                    {
+                if (board[i][j].getValue() == CaseValue.EMPTY) {
+                    if (board[i][j].isPossibleMove()) {
                         g2d.drawOval(x + 10, y + 10, getCaseWidth() - 20, getCaseHeight() - 20);
                     }
                     continue;
@@ -76,22 +93,17 @@ public class BoardPanel extends javax.swing.JPanel {
     }
 
     public int getCaseHeight() {
-        return getHeight() / 8;
+        return (getHeight() - SCORE_HEIGHT) / 8;
     }
 
-    public void playTurn(int i, int j)
-    {
-        if (!board[i][j].isEmpty() || !board[i][j].isPossibleMove()){
+    public void playTurn(int i, int j) {
+        if (!isSafe(i, j) || !board[i][j].isEmpty() || !board[i][j].isPossibleMove()) {
             return;
         }
-        
         board[i][j].setValue(turn);
-        //save move
         gamedata.addMove(turn,i,j);
-        
         flipPieces(i, j);
-        switchTurn();
-        
+        switchTurn();        
         calculatePossibleMoves();
         repaint();
     }
@@ -170,12 +182,20 @@ public class BoardPanel extends javax.swing.JPanel {
         return i < 8 && j < 8 && i >= 0 && j >= 0;
     }
     
+    private int getBoardCount(CaseValue value){
+        int count = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(board[i][j].getValue() == value) count++;
+            }
+        }
+        return count;
+    }
     public Case[][] getBoard()
     {
     	return this.board;
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
