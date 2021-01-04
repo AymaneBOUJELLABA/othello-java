@@ -1,31 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.othello.ui;
 
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- *
- * @author macbookpro
- */
 public class BoardPanel extends javax.swing.JPanel {
 
     public Case[][] board;
     public CaseValue turn;
 
-    /**
-     * Creates new form BoardPanel
-     */
     public BoardPanel(Case[][] board) {
         this.board = board;
         this.turn = CaseValue.BLACK;
@@ -36,14 +23,7 @@ public class BoardPanel extends javax.swing.JPanel {
             public void mouseReleased(MouseEvent e) {
                 int j = e.getX() / getCaseWidth();
                 int i = e.getY() / getCaseHeight();
-                if (!board[i][j].isEmpty()) {
-                    return;
-                }
-                board[i][j].setValue(turn);
-                flipPieces(i, i);
-                turn = turn == CaseValue.BLACK ? CaseValue.WHITE : CaseValue.BLACK;
-                calculatePossibleMoves();
-                repaint();
+                playTurn(i, j);
             }
         });
     }
@@ -90,14 +70,33 @@ public class BoardPanel extends javax.swing.JPanel {
         return getHeight() / 8;
     }
 
+    public void playTurn(int i, int j) {
+        if (!board[i][j].isEmpty()) {
+            return;
+        }
+        board[i][j].setValue(turn);
+        flipPieces(i, j);
+        switchTurn();
+        calculatePossibleMoves();
+        repaint();
+    }
+
+    public void switchTurn() {
+        turn = turn == CaseValue.BLACK ? CaseValue.WHITE : CaseValue.BLACK;
+    }
+
     public void flipPieces(int row, int col) {
         for (int dRow = -1; dRow <= 1; dRow++) {
             for (int dCol = -1; dCol <= 1; dCol++) {
+
+                if (dRow == 0 && dCol == 0) {
+                    continue;
+                }
                 if (checkDir(row, col, dRow, dCol)) {
                     for (int i = row + dRow, j = col + dCol; i < 8 && i >= 0 && j < 8 && j >= 0; i += dRow, j += dCol) {
-                        // We reached the borders
-                        if(board[i][j].isEmpty()) break;
-                        System.out.println("Found cell to flip " + i + ", " + j);
+                        if (board[i][j].isEmpty()) {
+                            break;
+                        }
                         board[i][j].setValue(turn);
                     }
                 }
@@ -120,6 +119,9 @@ public class BoardPanel extends javax.swing.JPanel {
     private boolean checkCase(int i, int j) {
         for (int k = -1; k <= 1; k++) {
             for (int m = -1; m <= 1; m++) {
+                if (k == 0 && m == 0) {
+                    continue;
+                }
                 if (checkDir(i, j, k, m)) {
                     return true;
                 }
