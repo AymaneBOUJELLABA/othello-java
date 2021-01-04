@@ -213,6 +213,7 @@ public class Home extends javax.swing.JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				//0 => pvp
+				dispose();
 				game.setType(0);
 				System.out.println("PvP choosed : " + game.getType());
 
