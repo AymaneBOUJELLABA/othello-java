@@ -71,7 +71,7 @@ public class BoardPanel extends javax.swing.JPanel {
     }
 
     public void playTurn(int i, int j) {
-        if (!board[i][j].isEmpty()) {
+        if (!board[i][j].isEmpty() || !board[i][j].isPossibleMove()) {
             return;
         }
         board[i][j].setValue(turn);
