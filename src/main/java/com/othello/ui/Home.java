@@ -196,8 +196,8 @@ public class Home extends javax.swing.JFrame
                 // Adding the initial pieces
                 defaultBoard[3][3].setValue(CaseValue.WHITE);
                 defaultBoard[3][4].setValue(CaseValue.BLACK);
-                defaultBoard[4][3].setValue(CaseValue.WHITE);
-                defaultBoard[4][4].setValue(CaseValue.BLACK);
+                defaultBoard[4][4].setValue(CaseValue.WHITE);
+                defaultBoard[4][3].setValue(CaseValue.BLACK);
                 
                 BoardFrame BF =new BoardFrame(defaultBoard,game);
                 BF.setVisible(true);
@@ -228,8 +228,8 @@ public class Home extends javax.swing.JFrame
                 // Adding the initial pieces
                 defaultBoard[3][3].setValue(CaseValue.WHITE);
                 defaultBoard[3][4].setValue(CaseValue.BLACK);
-                defaultBoard[4][3].setValue(CaseValue.WHITE);
-                defaultBoard[4][4].setValue(CaseValue.BLACK);
+                defaultBoard[4][4].setValue(CaseValue.WHITE);
+                defaultBoard[4][3].setValue(CaseValue.BLACK);
                 
                 BoardFrame BF =new BoardFrame(defaultBoard,game);
                 BF.setVisible(true);

@@ -48,6 +48,7 @@ public class BoardFrame extends javax.swing.JFrame {
         gamedata = game;
         
         boardpanel = new BoardPanel(board, gamedata);
+        boardpanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.jPanel1.add(boardpanel,BorderLayout.CENTER);
         
     }
@@ -62,6 +63,7 @@ public class BoardFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
