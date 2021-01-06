@@ -11,6 +11,8 @@ import com.othello.entities.CaseValue;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -89,6 +91,13 @@ public class BoardFrame extends javax.swing.JFrame {
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setText("Abandonner");
+        jMenuItem2.addActionListener(new ActionListener() 
+        {
+			public void actionPerformed(ActionEvent e)
+			{
+				jMenuItem1ActionPerformed2(e);
+			}
+		});
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -126,7 +135,16 @@ public class BoardFrame extends javax.swing.JFrame {
     	
     	System.out.println("saving game :");
     	System.out.println(gamedata);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }
+    private void jMenuItem1ActionPerformed2(java.awt.event.ActionEvent evt)
+    {
+    	int a = JOptionPane.showConfirmDialog(null, "Est ce que vous êtes sur ?");
+        if (a == JOptionPane.YES_OPTION) {
+                  dispose();
+                  Home home = new Home(gamedata.getOwner());
+                  home.setVisible(true);
+              }
+    }
 
     /**
      * @param args the command line arguments
