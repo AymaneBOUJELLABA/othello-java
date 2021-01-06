@@ -39,6 +39,7 @@ public class BoardPanel extends javax.swing.JPanel {
         super.paintComponent(g);
         doDrawing(g);
     }
+    
 
     private void doDrawing(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

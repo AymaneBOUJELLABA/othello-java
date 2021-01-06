@@ -32,6 +32,7 @@ public class BoardFrame extends javax.swing.JFrame {
     public static int WIDTH = 700, HEIGHT = 655;
     private OthelloGame gamedata;
     private BoardPanel boardpanel;
+    private BoardPanel newPanel;
     
     public BoardFrame(Case[][] board)
     {    	
@@ -70,6 +71,7 @@ public class BoardFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,9 +101,19 @@ public class BoardFrame extends javax.swing.JFrame {
 			}
 		});
         jMenu1.add(jMenuItem2);
-
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem3.setText("Recommencer");
+        jMenuItem3.addActionListener(new ActionListener() 
+        {
+			public void actionPerformed(ActionEvent e)
+			{
+				jMenuItem1ActionPerformed3(e);
+			}
+		});
+        jMenu1.add(jMenuItem3);
+        
         jMenuBar1.add(jMenu1);
-
+        
         jMenu2.setText("Aide");
         jMenuBar1.add(jMenu2);
 
@@ -144,6 +156,32 @@ public class BoardFrame extends javax.swing.JFrame {
                   Home home = new Home(gamedata.getOwner());
                   home.setVisible(true);
               }
+    }
+    private void jMenuItem1ActionPerformed3(java.awt.event.ActionEvent evt)
+    {
+    	Case[][] board = new Case[8][8];
+    	int a = JOptionPane.showConfirmDialog(null, "Est ce que vous êtes sur ?");
+        if (a == JOptionPane.YES_OPTION) 
+        {	
+        	for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    board[i][j] = new Case(i,j);
+                }
+            }
+            // Adding the initial pieces
+            board[3][3].setValue(CaseValue.WHITE);
+            board[3][4].setValue(CaseValue.BLACK);
+            board[4][3].setValue(CaseValue.BLACK);
+            board[4][4].setValue(CaseValue.WHITE);
+            newPanel =new BoardPanel(board, gamedata);
+        	gamedata.setStatefromBoard(newPanel.getBoard());
+        	
+        	this.jPanel1.add(newPanel,BorderLayout.CENTER);
+        	repaint();
+        	
+        }
+        		
+        	
     }
 
     /**
@@ -203,6 +241,7 @@ public class BoardFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
