@@ -134,7 +134,8 @@ public class BoardPanel extends javax.swing.JPanel {
         }
     }
 
-    public void calculatePossibleMoves() {
+    public void calculatePossibleMoves()
+    {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (!board[i][j].isEmpty()) {
@@ -146,7 +147,8 @@ public class BoardPanel extends javax.swing.JPanel {
 
     }
 
-    private boolean checkCase(int i, int j) {
+    private boolean checkCase(int i, int j)
+    {
         for (int k = -1; k <= 1; k++) {
             for (int m = -1; m <= 1; m++) {
                 if (k == 0 && m == 0) {
@@ -185,7 +187,8 @@ public class BoardPanel extends javax.swing.JPanel {
         return i < 8 && j < 8 && i >= 0 && j >= 0;
     }
     
-    private int getBoardCount(CaseValue value){
+    private int getBoardCount(CaseValue value)
+    {
         int count = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {

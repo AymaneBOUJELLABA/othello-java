@@ -1,62 +1,130 @@
 package com.othello.ai;
 
 import com.othello.entities.Case;
+import com.othello.entities.CaseValue;
 import com.othello.ui.BoardPanel;
 
 //OUR OTHELLO !!
 public class OthelloGame extends GameSearch
-{
-	private BoardPanel gamepanel;
-	
+{	
+	BoardPanel gamepanel;
 	private int [] score = { 100, -20, 10, 5, 5, 10, -20,100,
-            -20, -50, -2, -2, -2, -2, -50, -20,
-            10, -2, -1, -1, -1,-1, -2, 10,
-            5, -2, -1, -1, -1, -1, -2, 5,
-            5, -2, -1, -1, -1, -1, -2, 5,
-            10, -2, -1, -1, -1,-1, -2, 10,
-            -20, -50, -2, -2, -2, -2, -50, -20,
-            100, -20, 10, 5, 5, 10, -20,100};
+				            -20, -50, -2, -2, -2, -2, -50, -20,
+				            10, -2, -1, -1, -1,-1, -2, 10,
+				            5, -2, -1, -1, -1, -1, -2, 5,
+				            5, -2, -1, -1, -1, -1, -2, 5,
+				            10, -2, -1, -1, -1,-1, -2, 10,
+				            -20, -50, -2, -2, -2, -2, -50, -20,
+				            100, -20, 10, 5, 5, 10, -20,100};
 	
+	public OthelloGame(BoardPanel gamePanel)
+	{
+		this.gamepanel = gamePanel;
+	}
 	@Override
 	//CHECK IF THE BOARD IS FULL
 	public boolean drawnPosition(Position p)
 	{	
-		// TODO Auto-generated method stub
-		return false;
+		othelloPosition pos = (othelloPosition) p;
+		
+		for(int i=0;i<64;i++)
+			if(pos.board[i].getValue()==CaseValue.EMPTY)
+				return false;
+
+		return true;
 	}
 
 	@Override
 	public boolean wonPosition(Position p, boolean player)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		boolean iswon = false;
+		
+		othelloPosition pos = (othelloPosition) p;
+		
+		int player_Score = 0, ai_Score = 0, BlankNum = 0;
+		for(int i=0;i<64;i++)
+		{
+			switch(pos.board[i].getValue())
+			{
+				case BLACK: player_Score++; break;
+				case WHITE: ai_Score++; break;
+				case EMPTY: BlankNum++; break;
+				default : BlankNum++; break;
+			}
+		}
+		
+		if(player)
+		{
+			if(ai_Score == 0)
+				iswon = true;
+			else if(BlankNum == 0 && player_Score > ai_Score)
+				iswon = true;
+		}
+		else
+		{
+			if(player_Score == 0)
+				iswon = true;
+			else if(BlankNum == 0 && player_Score < ai_Score)
+				iswon = true;
+		}
+		
+		return iswon;
 	}
 
 	@Override
 	public float positionEvaluation(Position p, boolean player)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int count = 0;
+		float evaluation = 0;
+		othelloPosition pos = (othelloPosition) p; 
+		
+		for(int i=0; i<64 ;i++)
+		{
+			if(player && pos.board[i].getValue() == CaseValue.BLACK)
+				count ++;
+			else if(!player && pos.board[i].getValue() == CaseValue.WHITE)
+				count ++;
+		}
+		
+		for(int i=0; i<64; i++)
+        {
+            if(pos.board[i].getValue()==CaseValue.BLACK)
+            	evaluation+=score[i];
+            else if(pos.board[i].getValue()==CaseValue.WHITE)
+            	evaluation-=score[i];
+        }
+		
+		if (wonPosition(p, player)) 
+        {
+            return evaluation + (1.0f / 65-count);
+        }
+        if (wonPosition(p, !player)) 
+        {
+            return -(evaluation + (1.0f / 65-count));
+        }
+        
+        return evaluation;
 	}
 
+	//either print in console or draw the position to the UI
 	@Override
 	public void printPosition(Position p)
 	{
-		// TODO Auto-generated method stub
 		
 	}
-
+	
+	//mouad this for you
 	@Override
 	public Position[] possibleMoves(Position p, boolean player)
 	{
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
-
+	
+	//oh also this HURRY UP
 	@Override
 	public Position makeMove(Position p, boolean player, Move move)
 	{
-		// TODO Auto-generated method stu
 		
 		return null;
 	}
@@ -64,13 +132,21 @@ public class OthelloGame extends GameSearch
 	@Override
 	public boolean reachedMaxDepth(Position p, int depth)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		boolean ret = false;
+        if(depth>=5)
+        	ret = true;
+        else if (wonPosition(p, false) || wonPosition(p, true) || drawnPosition(p))
+	        ret = true;
+        
+        return ret;
 	}
 
+	
+	//YOU HAVE TO DO THIS TOO !!!
 	@Override
-	public Move createMove() {
-		// TODO Auto-generated method stub
+	public Move createMove()
+	{
+		
 		return null;
 	}
 	

@@ -48,12 +48,14 @@ public abstract class GameSearch {
     									boolean player, float alpha, float beta)
     {
         if (GameSearch.DEBUG) System.out.println("alphaBetaHelper("+depth+","+p+","+alpha+","+beta+")");
-        if (reachedMaxDepth(p, depth)) {
+        if (reachedMaxDepth(p, depth))
+        {
             Vector v = new Vector(2);
             float value = positionEvaluation(p, player);
             v.addElement(new Float(value));
             v.addElement(null);
-            if(GameSearch.DEBUG) {
+            if(GameSearch.DEBUG)
+            {
                 System.out.println(" alphaBetaHelper: mx depth at " + depth+
                                    ", value="+value);
             }
@@ -65,7 +67,8 @@ public abstract class GameSearch {
         {
             return null;
         }
-        for (int i=0; i<moves.length; i++) {
+        for (int i=0; i<moves.length; i++) 
+        {
             Vector v2 = alphaBetaHelper(depth + 1, moves[i], !player, -beta, -alpha);
               if (v2 == null || v2.size() < 1) continue;
             float value = -((Float)v2.elementAt(0)).floatValue();
@@ -86,7 +89,8 @@ public abstract class GameSearch {
              * found a move that proves that the previous move in the
              * move chain was dubious
              */
-            if (beta >= alpha) {
+            if (beta >= alpha)
+            {
                 break;
             }
         }
@@ -104,35 +108,33 @@ public abstract class GameSearch {
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
             startingPosition = (Position)v.elementAt(1);
         }
-        while (true) {
+        while (true)
+        {
             printPosition(startingPosition);
-            if (wonPosition(startingPosition, PROGRAM)) {
+            if (wonPosition(startingPosition, PROGRAM))
+            {
                 System.out.println("Program won");
                 break;
             }
-            if (wonPosition(startingPosition, HUMAN)) {
+            if (wonPosition(startingPosition, HUMAN))
+            {
                 System.out.println("Human won");
                 break;
             }
-            if (drawnPosition(startingPosition)) {
+            if (drawnPosition(startingPosition))
+            {
                 System.out.println("Drawn game");
                 break;
             }
-            System.out.print("\nYour move:");
+            
             Move move = createMove();
             startingPosition = makeMove(startingPosition, HUMAN, move);
             printPosition(startingPosition);
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
             
             Enumeration enum2 = v.elements();
-//            while (enum2.hasMoreElements()) {
-//                System.out.println(" next element: " + enum2.nextElement());
-//            }
-                     
+
             startingPosition = (Position)v.elementAt(1);  
-//            try {
-//                    System.in.read();
-//            } catch (Exception e) { }
         }
     }
 }

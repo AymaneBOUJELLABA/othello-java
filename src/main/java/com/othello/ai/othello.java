@@ -28,14 +28,23 @@ public class othello extends GameSearch
         return ret;
     }
     
-    public boolean wonPosition(Position p, boolean player) {
+    public boolean wonPosition(Position p, boolean player)
+    {
         if (GameSearch.DEBUG) System.out.println("wonPosition("+p+","+player+")");
+        
         boolean ret = false;
+        
         othelloPosition pos = (othelloPosition)p;
+        
+        //human
         int Hnum=0;
+        //program
         int Pnum=0;
+        //blank
         int Bnum=0;
-        for (int i=0; i<64; i++) {
+        for (int i=0; i<64; i++)
+        {
+        	//number of player's pieces
             if (pos.board[i] == -1)
                 Pnum++;
             else if (pos.board[i] == 1)
@@ -43,38 +52,62 @@ public class othello extends GameSearch
             else 
                 Bnum++;
         }
+        // player == true ( players turn )
         if (player)
         {
-            if (Pnum == 0) ret = true;
-            else if (Bnum == 0 && Hnum > Pnum) ret = true;
+        	//si le programm na aucune case ( player won ) => WON
+            if (Pnum == 0)
+            	ret = true;
+            // si aucun espace est vide et Human > Program => WON
+            else if (Bnum == 0 && Hnum > Pnum)
+            	ret = true;
         }
+        // player == false ( program's turn)
         else
-        {
-           if (Hnum == 0) ret = true;
-           else if (Bnum == 0 && Pnum > Hnum) ret = true; 
+        {  
+        	//si le player n'a aucune case ( program won ) => WON
+           if (Hnum == 0)
+        	   ret = true;
+           else if (Bnum == 0 && Pnum > Hnum)
+        	   ret = true; 
         }
         return ret;
     }
     
-    public float positionEvaluation(Position p, boolean player) {
+    public float positionEvaluation(Position p, boolean player)
+    {
         int count = 0;
         othelloPosition pos = (othelloPosition)p;
+        
         int a;
-        if (player) a=1;
-        else a=-1;
-        for (int i=0; i<64; i++) {
-            if (pos.board[i] == a) count++;
+        
+        if (player)
+        	a=1;
+        else
+        	a=-1;
+        
+        for (int i=0; i<64; i++)
+        {
+            if (pos.board[i] == a)
+            	count++;
         }
+        
         float evaluation =0;
+        
         for(int i=0; i<64; i++)
         {
-            if(pos.board[i] == 1) evaluation+=tab[i];
-            else if(pos.board[i] == -1) evaluation-=tab[i];
+            if(pos.board[i] == 1)
+            	evaluation+=tab[i];
+            else if(pos.board[i] == -1)
+            	evaluation-=tab[i];
         }
-        if (wonPosition(p, player))  {
+        
+        if (wonPosition(p, player)) 
+        {
             return evaluation + (1.0f / 65-count);
         }
-        if (wonPosition(p, !player))  {
+        if (wonPosition(p, !player)) 
+        {
             return -(evaluation + (1.0f / 65-count));
         }
         return evaluation;
@@ -608,17 +641,24 @@ public class othello extends GameSearch
                 }
         return pos2;
     }
-    public boolean reachedMaxDepth(Position p, int depth) {
+    public boolean reachedMaxDepth(Position p, int depth)
+    {
         boolean ret = false;
-        if(depth>=5) ret = true;
+        if(depth>=5)
+        	ret = true;
         else 
-        if (wonPosition(p, false)) ret = true;
-        else if (wonPosition(p, true))  ret = true;
-        else if (drawnPosition(p))      ret = true;
-        if (GameSearch.DEBUG) {
-            System.out.println("reachedMaxDepth: pos=" + p.toString() + ", depth="+depth
-                               +", ret=" + ret);
-        }
+	        if (wonPosition(p, false))
+	        	ret = true;
+	        else if (wonPosition(p, true)) 
+	        	ret = true;
+	        else if (drawnPosition(p))
+	        	ret = true;
+	        
+        	if (GameSearch.DEBUG)
+        	{
+	            System.out.println("reachedMaxDepth: pos=" + p.toString() + ", depth="+depth
+	                               +", ret=" + ret);
+	        }
         return ret;
     }
     public Move createMove() {
