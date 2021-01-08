@@ -201,6 +201,9 @@ public class Home extends javax.swing.JFrame
                 
                 BoardFrame BF =new BoardFrame(defaultBoard,game);
                 BF.setVisible(true);
+                
+                
+                //CALL THE AI TO PLAY
 			}
 		});
 		btnNewButton.setBounds(60, 135, 122, 23);

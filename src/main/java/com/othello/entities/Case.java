@@ -16,24 +16,14 @@ public class Case
     private CaseValue value;
     private boolean isPossibleMove;
     
-    public static int[] getTable(Case[][] oldboard)
+    public static Case[] getTable(Case[][] oldboard)
     {
-    	int[] board = new int[64];
+    	Case[] board = new Case[64];
     	
     	for(int i=0;i<8;i++)
     		for(int j=0;j<8;j++)
-    		{
-    			int v;
-    			switch(oldboard[i][j].getValue())
-    			{
-	    			case BLACK: v=1;  break; 
-	    			case WHITE:	v=-1; break;
-	    			case EMPTY: v=0;  break;
-	    			default :   v=0; break;
-    			}
-    			
-    			board[(i*8)+j] = v;
-    		}
+    			board[(i*8)+j] = oldboard[i][j];
+    	
     	return board; 
     }
     

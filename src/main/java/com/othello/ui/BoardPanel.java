@@ -17,7 +17,8 @@ public class BoardPanel extends javax.swing.JPanel {
     static int SCORE_HEIGHT = 75;
     public OthelloGame gamedata;
 
-    public BoardPanel(Case[][] board,OthelloGame gamedata){
+    public BoardPanel(Case[][] board,OthelloGame gamedata)
+    {
         this.board = board;
         this.turn = CaseValue.BLACK;
         this.gamedata = gamedata;
@@ -97,7 +98,8 @@ public class BoardPanel extends javax.swing.JPanel {
         return (getHeight() - SCORE_HEIGHT) / 8;
     }
 
-    public void playTurn(int i, int j) {
+    public void playTurn(int i, int j)
+    {
         if (!isSafe(i, j) || !board[i][j].isEmpty() || !board[i][j].isPossibleMove()) {
             return;
         }

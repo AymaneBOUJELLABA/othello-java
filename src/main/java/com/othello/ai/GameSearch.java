@@ -24,7 +24,6 @@ public abstract class GameSearch {
     /*
      * Abstract methods:
      */
-
     public abstract boolean drawnPosition(Position p);                        //-- 
     public abstract boolean wonPosition(Position p, boolean player);          //-- 
     public abstract float positionEvaluation(Position p, boolean player);     //-- 
@@ -99,7 +98,8 @@ public abstract class GameSearch {
         }
         return v3;
     }
-    public void playGame(Position startingPosition, boolean humanPlayFirst) {
+    public void playGame(Position startingPosition, boolean humanPlayFirst)
+    {
         if (humanPlayFirst == false) {
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
             startingPosition = (Position)v.elementAt(1);
