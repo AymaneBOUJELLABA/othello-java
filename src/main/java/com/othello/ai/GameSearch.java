@@ -46,7 +46,7 @@ public abstract class GameSearch {
     }
 
     protected Vector alphaBetaHelper(int depth, Position p,
-                                     boolean player, float alpha, float beta)
+    									boolean player, float alpha, float beta)
     {
         if (GameSearch.DEBUG) System.out.println("alphaBetaHelper("+depth+","+p+","+alpha+","+beta+")");
         if (reachedMaxDepth(p, depth)) {

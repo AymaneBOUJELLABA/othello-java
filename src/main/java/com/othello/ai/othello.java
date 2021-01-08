@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class othello extends GameSearch
 {
-    
     private int [] tab = { 100, -20, 10, 5, 5, 10, -20,100,
                            -20, -50, -2, -2, -2, -2, -50, -20,
                            10, -2, -1, -1, -1,-1, -2, 10,
@@ -19,7 +18,7 @@ public class othello extends GameSearch
         if (GameSearch.DEBUG) System.out.println("drawnPosition("+p+")");
         boolean ret = true;
         othelloPosition pos = (othelloPosition)p;
-        for (int i=0; i<64; i++) {
+        for (int i=0; i<64; i++){
             if (pos.board[i] == othelloPosition.BLANK){
                 ret = false;
                 break;
@@ -80,7 +79,8 @@ public class othello extends GameSearch
         }
         return evaluation;
     }
-    public void printPosition(Position p) {
+    public void printPosition(Position p)
+    {
         System.out.println("Board position:");
         othelloPosition pos = (othelloPosition)p;
         int count = 0;
@@ -401,11 +401,12 @@ public class othello extends GameSearch
         }
         return ret;
     }
-    public Position makeMove(Position p, boolean player, Move move) {
+    public Position makeMove(Position p, boolean player, Move move)
+    {
         if (GameSearch.DEBUG) System.out.println("Entered TicTacToe.makeMove");
         othelloMove m = (othelloMove)move;
         othelloPosition pos = (othelloPosition)p;
-        othelloPosition pos2 = new  othelloPosition();
+        othelloPosition pos2 = new othelloPosition();
         for (int i=0; i<64; i++) pos2.board[i] = pos.board[i];
         int pp;
         if (player) pp =  1;
@@ -631,7 +632,8 @@ public class othello extends GameSearch
         mm.moveIndex = ch;
         return mm;
     }
-    static public void main(String [] args) {
+    static public void main(String [] args)
+    {
         othelloPosition p = new othelloPosition();
         othello ttt = new othello();
         ttt.playGame(p, true);

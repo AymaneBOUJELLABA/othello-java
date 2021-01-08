@@ -16,7 +16,29 @@ public class Case
     private CaseValue value;
     private boolean isPossibleMove;
     
-    public Case(int indexX, int indexY) {
+    public static int[] getTable(Case[][] oldboard)
+    {
+    	int[] board = new int[64];
+    	
+    	for(int i=0;i<8;i++)
+    		for(int j=0;j<8;j++)
+    		{
+    			int v;
+    			switch(oldboard[i][j].getValue())
+    			{
+	    			case BLACK: v=1;  break; 
+	    			case WHITE:	v=-1; break;
+	    			case EMPTY: v=0;  break;
+	    			default :   v=0; break;
+    			}
+    			
+    			board[(i*8)+j] = v;
+    		}
+    	return board; 
+    }
+    
+    public Case(int indexX, int indexY)
+    {
         this.indexX = indexX;
         this.indexY = indexY;
         this.value = CaseValue.EMPTY;
@@ -77,4 +99,12 @@ public class Case
     public boolean isEmpty(){
         return getValue() == CaseValue.EMPTY;
     }
+
+	@Override
+	public String toString() {
+		return "Case [indexX=" + indexX + ", indexY=" + indexY + ", value=" + value + ", isPossibleMove="
+				+ isPossibleMove + "]";
+	}
+    
+    
 }
