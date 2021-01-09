@@ -135,7 +135,7 @@ public class OthelloGameAI extends GameSearch {
     @Override
     public boolean reachedMaxDepth(Position p, int depth) {
         boolean ret = false;
-        if (depth >= 10) {
+        if (depth >= 1) {
             ret = true;
         } else if (wonPosition(p, false) || wonPosition(p, true) || drawnPosition(p)) {
             ret = true;
@@ -152,10 +152,15 @@ public class OthelloGameAI extends GameSearch {
     }
 
     public void playturn(Position startingPosition, boolean humanPlayFirst) {
-        Vector v = alphaBeta(0, startingPosition, PROGRAM);
-        Enumeration enum2 = v.elements();
-        startingPosition = (Position) v.elementAt(1);
-        printPosition(startingPosition);
+        try{
+            Vector v = alphaBeta(0, startingPosition, PROGRAM);
+            Enumeration enum2 = v.elements();
+            startingPosition = (Position) v.elementAt(1);
+            printPosition(startingPosition);
+        }catch(Exception e){
+            System.out.println("Pas de possible moves pour le AI");
+            printPosition(startingPosition);
+        }
     }
 
 }

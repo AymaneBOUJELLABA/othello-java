@@ -228,7 +228,7 @@ public class BoardPanel extends javax.swing.JPanel
         {
             for (int j = 0; j < 8; j++)
             {
-                if(board[i][j].isPossibleMove())
+                if(board[i][j].isEmpty())
                     count++;
             }
         }
@@ -261,6 +261,11 @@ public class BoardPanel extends javax.swing.JPanel
             }
         }
         
+        if(count == 0 && (this.gamedata.getType() == 0 ||this.gamedata.getType() == 1 && turn == CaseValue.BLACK)){
+            switchTurn();
+            return null;
+        }
+        
         othelloPosition[] positions = new othelloPosition[count];
         int k=0;
         for (int i = 0; i < 8; i++)
@@ -288,7 +293,7 @@ public class BoardPanel extends javax.swing.JPanel
                 if (k == 0 && m == 0) {
                     continue;
                 }
-                if (checkDir(i, j, k, m,turn)) {
+                if (checkDir(i, j, k, m,turn) && adjacentToEnemy(i,j, turn)) {
                     return true;
                 }
             }
@@ -378,6 +383,32 @@ public class BoardPanel extends javax.swing.JPanel
             message += "Bien joue!";
         
         JOptionPane.showMessageDialog(this, message);
+    }
+    
+    private boolean adjacentToEnemy(int i, int j, CaseValue turn){
+        for (int k = -1; k <= 1; k++) {
+            for (int m = -1; m <= 1; m++) {
+                /*
+                -1 -1
+                -1 0
+                -1 1
+                
+                0 -1
+                0 1
+                
+                1 -1
+                1 0 
+                1 1
+                */
+                if(m == 0 && k == 0 || !isSafe(i + k, j + m)) continue;
+                
+                if(board[i + k][j + m].getValue() != turn && board[i + k][j + m].getValue() != CaseValue.EMPTY){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
     /**
      * This method is called from within the constructor to initialize the form.
