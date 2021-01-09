@@ -163,6 +163,7 @@ public class BoardFrame extends javax.swing.JFrame {
     	int a = JOptionPane.showConfirmDialog(null, "Est ce que vous êtes sur ?");
         if (a == JOptionPane.YES_OPTION) 
         {	
+        	dispose();
         	for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     board[i][j] = new Case(i,j);
@@ -173,12 +174,9 @@ public class BoardFrame extends javax.swing.JFrame {
             board[3][4].setValue(CaseValue.BLACK);
             board[4][3].setValue(CaseValue.BLACK);
             board[4][4].setValue(CaseValue.WHITE);
-            newPanel =new BoardPanel(board, gamedata);
-        	gamedata.setStatefromBoard(newPanel.getBoard());
-        	
-        	this.jPanel1.add(newPanel,BorderLayout.CENTER);
-        	repaint();
-        	
+            
+        	BoardFrame BF =new BoardFrame(board,gamedata);
+            BF.setVisible(true);
         }
         		
         	
