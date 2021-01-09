@@ -134,9 +134,7 @@ public abstract class GameSearch {
             startingPosition = makeMove(startingPosition, HUMAN, move);
             printPosition(startingPosition);
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
-            
             Enumeration enum2 = v.elements();
-
             startingPosition = (Position)v.elementAt(1);  
         }
     }

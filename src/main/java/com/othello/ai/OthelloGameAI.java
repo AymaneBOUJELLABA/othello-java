@@ -1,5 +1,8 @@
 package com.othello.ai;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
 import com.othello.ui.BoardPanel;
@@ -109,24 +112,28 @@ public class OthelloGameAI extends GameSearch
 	@Override
 	public void printPosition(Position p)
 	{
-		
+		gamepanel.setBoard(p);
 	}
 	
 	//mouad this for you
 	@Override
 	public Position[] possibleMoves(Position p, boolean player)
 	{
-		
-		return null;
+		othelloPosition pos = (othelloPosition) p ;
+		return gamepanel.calculatePossibleMoves(Case.get2DTable(pos.board),player? CaseValue.BLACK: CaseValue.WHITE);
 	}
-	//oh also this HURRY UP
+
 	@Override
 	public Position makeMove(Position p, boolean player, Move move)
 	{
+		othelloMove Othmove = (othelloMove) move;
 		
-		return null;
+		gamepanel.setBoard(p);
+		gamepanel.playTurn(Othmove.moveIndex/8, Othmove.moveIndex%8);
+		
+		return gamepanel.getBoardState();
 	}
-
+	
 	@Override
 	public boolean reachedMaxDepth(Position p, int depth)
 	{
@@ -145,6 +152,14 @@ public class OthelloGameAI extends GameSearch
 	{
 		
 		return null;
+	}
+	
+	public void playturn(Position startingPosition, boolean humanPlayFirst)
+	{
+        Vector v = alphaBeta(0, startingPosition, PROGRAM);
+        Enumeration enum2 = v.elements();
+        startingPosition = (Position)v.elementAt(1);
+        printPosition(startingPosition);
 	}
 	
 }

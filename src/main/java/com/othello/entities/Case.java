@@ -34,7 +34,6 @@ public class Case
     	
     	return board; 
     }
-    
     public Case(int indexX, int indexY)
     {
         this.indexX = indexX;
