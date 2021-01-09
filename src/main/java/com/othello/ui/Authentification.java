@@ -15,10 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * 
- */
 public class Authentification extends javax.swing.JFrame
 {
 
@@ -37,7 +33,6 @@ public class Authentification extends javax.swing.JFrame
                Class.forName("com.mysql.cj.jdbc.Driver");	 
                connection = DriverManager.getConnection("jdbc:mysql://localhost/othello_game?serverTimezone=UTC" ,"root","");
                System.out.println("Connexion effective !");
-
        }
        catch(ClassNotFoundException | SQLException ex)
        {

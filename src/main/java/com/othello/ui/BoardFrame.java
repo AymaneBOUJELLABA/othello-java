@@ -29,7 +29,7 @@ public class BoardFrame extends javax.swing.JFrame {
      * Creates new form BoardFrame
      */
     
-    public static int WIDTH = 700, HEIGHT = 655;
+    public static int WIDTH = 700, HEIGHT = 700;
     private OthelloGame gamedata;
     private BoardPanel boardpanel;
     private BoardPanel newPanel;
@@ -136,7 +136,7 @@ public class BoardFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    {                                           
         // TODO add your handling code here:
     	String gamename = (String)JOptionPane.showInputDialog("Veuillez saisir un nom : ");
     	if(gamename!=null)

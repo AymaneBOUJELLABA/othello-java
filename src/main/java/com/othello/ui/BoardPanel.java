@@ -84,7 +84,7 @@ public class BoardPanel extends javax.swing.JPanel
         g2d.fillOval(getWidth() - 70, 10, getCaseWidth() - 20, getCaseHeight() - 20);
         g2d.setColor(turn == CaseValue.WHITE ? Color.black : Color.white);
         g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,  16));
-        g2d.drawString("Tour", getWidth() - 55, 35);
+        g2d.drawString("Tour", getWidth() - getCaseWidth()/2 - 5 , getCaseHeight()/2 +  3);
 
         
         g2d.translate(0, SCORE_HEIGHT);
@@ -373,33 +373,29 @@ public class BoardPanel extends javax.swing.JPanel
         int whiteCount = getBoardCount(CaseValue.WHITE), blackCount = getBoardCount(CaseValue.BLACK);
         
         String message;
-        if(whiteCount == blackCount){
+        if(whiteCount == blackCount)
+        {
             message = "Le jeu était un match nul!";
-        }else{
-            message =  "Le " + (blackCount > whiteCount ? "noir" : "blanc") + " était victorieux!";
+            gamedata.setResult("Partie nul!");
+        }else
+        {
+            message =  "Le " + (blackCount > whiteCount ? "noir" : "blanc") + " est victorieux!";
+            
+            gamedata.setResult(blackCount > whiteCount ? "Victoire" : "Perdue");
         }
-        
         if(this.gamedata.getType() == 1 && blackCount > whiteCount)
-            message += "Bien joue!";
-        
+        {
+        	message += "Bien joue!";
+            gamedata.setResult("Victoire");
+
+        }
+        gamedata.savegame();
         JOptionPane.showMessageDialog(this, message);
     }
     
     private boolean adjacentToEnemy(int i, int j, CaseValue turn){
         for (int k = -1; k <= 1; k++) {
             for (int m = -1; m <= 1; m++) {
-                /*
-                -1 -1
-                -1 0
-                -1 1
-                
-                0 -1
-                0 1
-                
-                1 -1
-                1 0 
-                1 1
-                */
                 if(m == 0 && k == 0 || !isSafe(i + k, j + m)) continue;
                 
                 if(board[i + k][j + m].getValue() != turn && board[i + k][j + m].getValue() != CaseValue.EMPTY){

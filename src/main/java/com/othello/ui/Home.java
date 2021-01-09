@@ -107,8 +107,20 @@ public class Home extends javax.swing.JFrame
         {
         	public void actionPerformed(ActionEvent e)
         	{
-        		String name = (String)JOptionPane.showInputDialog("Veuillez inserer le nom du jeu : ");
-        		if(name!=null)
+        		
+        		ArrayList<String> gamenames = OthelloGame.getGames(username);
+        		
+        		Object[] options = gamenames.toArray();
+        		Object value = JOptionPane.showInputDialog(null, 
+                        "Veuillez choisir une partie ancien", 
+                        "Jeux : ", 
+                         JOptionPane.QUESTION_MESSAGE, 
+                         null,
+                         options, 
+                         options[0]);
+        		
+        		String name = (String) value;
+        		if(!name.isEmpty())
         		{
         			
         			game = OthelloGame.loadgame(name);
@@ -121,11 +133,11 @@ public class Home extends javax.swing.JFrame
         			 BoardFrame BF =new BoardFrame(board,game);
                      BF.setVisible(true);
         		}
-        			
         		else
         			JOptionPane.showMessageDialog(null, "no game found!");
         		
         		pack();
+        		revalidate();
         	}
         });
         LoadGame.setBounds(258, 164, 137, 23);
@@ -297,21 +309,19 @@ public class Home extends javax.swing.JFrame
         gamelistPanel.setLayout(new BorderLayout());
         
         // Data to be displayed in the JTable 
-        String[][] data = new String[games.size()][2];
+        String[][] data = new String[games.size()][3];
         
         for(int i=0; i<games.size();i++)
         {
-        	//game name
-        	data[i][0] = games.get(i);
+        	OthelloGame newgame = OthelloGame.loadgame(games.get(i));
         	
-        	if(OthelloGame.isWon(data[i][0]))
-        		data[i][1] = "WIN"; //gamestate
-        	else
-        		data[i][1] = "LOOSE";
+        	data[i][0] = newgame.getName();
+        	data[i][1] = newgame.getResult();
+        	data[i][2] = newgame.getType() == 0? "Player v Player" : "Player v AI";
         }
        
         // Column Names 
-        String[] columnNames = { "Game Name", "Game State"}; 
+        String[] columnNames = {"Game Name","Game State","Game Type"}; 
   
         // Initializing the JTable 
         JTable j = new JTable(data, columnNames); 

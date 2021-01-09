@@ -24,7 +24,7 @@ public class OthelloGame
 	
 	/* IMPORTANT FIELDS ( GAME DATA FIELDS ) */ 
 	private String moves; //B11,W25,B36,W58 (NEED FROM BOARD)
-	private boolean isWon; // need from board ( )
+	private String result; // need from board ( )
 	private String state; // 0,0,B|0,1,E... (NEED FROM BOARD)
 	
 	public void savegame()
@@ -37,11 +37,11 @@ public class OthelloGame
 			if(oldgame==null)
 			{
 				System.out.println("new game saved");
-				query = "INSERT INTO game(name,username,date,type,moves,state,isWon) VALUES(?,?,?,?,?,?,?);";
+				query = "INSERT INTO game(name,username,date,type,moves,state,result) VALUES(?,?,?,?,?,?,?);";
 			}else
 			{
 				System.out.println("old game found");
-				query = "UPDATE game set name=?,username=?,date=?,type=?,moves=?,state=?,isWon=? WHERE id=?";
+				query = "UPDATE game set name=?,username=?,date=?,type=?,moves=?,state=?,result=? WHERE id=?";
 				stmt = cnx.prepareStatement(query);
 				stmt.setInt(8, id);
 			}
@@ -56,7 +56,7 @@ public class OthelloGame
 			stmt.setInt(4,type);
 			stmt.setString(5,moves);
 			stmt.setString(6, state);
-			stmt.setBoolean(7, isWon);
+			stmt.setString(7, result);
 
 			
 			stmt.execute();
@@ -70,7 +70,7 @@ public class OthelloGame
 	{
 		try
 		{	
-			String query = "SELECT id,name,username,date,type,moves,isWon,State FROM game WHERE id=?";
+			String query = "SELECT id,name,username,date,type,moves,result,State FROM game WHERE id=?";
 			PreparedStatement stmt = cnx.prepareStatement(query);
 			
 			stmt.setInt(1, id);
@@ -78,7 +78,7 @@ public class OthelloGame
 			ResultSet res = stmt.executeQuery();
 			
 			if(res.next())
-				return new OthelloGame(res.getInt(1),res.getString(2),res.getString(3),res.getDate(4),res.getInt(5),res.getString(6),res.getBoolean(7),res.getString(8));
+				return new OthelloGame(res.getInt(1),res.getString(2),res.getString(3),res.getDate(4),res.getInt(5),res.getString(6),res.getString(7),res.getString(8));
 				
 		}catch(SQLException e)
 		{
@@ -90,7 +90,7 @@ public class OthelloGame
 	{
 		try
 		{
-			String query = "SELECT id,name,username,date,type,moves,isWon,State FROM game WHERE name=?";
+			String query = "SELECT id,name,username,date,type,moves,result,State FROM game WHERE name=?";
 			PreparedStatement stmt = cnx.prepareStatement(query);
 			
 			stmt.setString(1, gamename);
@@ -98,7 +98,7 @@ public class OthelloGame
 			ResultSet res = stmt.executeQuery();
 			
 			if(res.next())
-				return new OthelloGame(res.getInt(1),res.getString(2),res.getString(3),res.getDate(4),res.getInt(5),res.getString(6),res.getBoolean(7),res.getString(8));
+				return new OthelloGame(res.getInt(1),res.getString(2),res.getString(3),res.getDate(4),res.getInt(5),res.getString(6),res.getString(7),res.getString(8));
 				
 		}catch(SQLException e)
 		{
@@ -140,7 +140,6 @@ public class OthelloGame
 		{
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	public OthelloGame()
@@ -148,13 +147,13 @@ public class OthelloGame
 		super();
 		moves = "";
 		state = "";
-		isWon = false;
+		result = "Partie en cours";
 		
 		long millis=System.currentTimeMillis();  
 		date=new java.sql.Date(millis);
 	}
 	
-	public OthelloGame(int id, String name, String owner, Date date, int type, String moves, boolean won,
+	public OthelloGame(int id, String name, String owner, Date date, int type, String moves, String result,
 			String state) 
 	{
 		super();
@@ -164,7 +163,7 @@ public class OthelloGame
 		this.date = date;
 		this.type = type;
 		this.moves = moves;
-		this.isWon = won;
+		this.result = result;
 		this.state = state;
 	}
 
@@ -175,7 +174,7 @@ public class OthelloGame
 		game2.setOwner("aymane");
 		game2.setMoves("B11,W22,B33,W44,B55");
 		game2.setType(0);
-		game2.setWon(false);
+		game2.setResult("");
 		game2.setState("0,0,B|0,1,W|0,2,E|0,0,B|0,1,W|0,2,E|0,0,B|0,1,W|0,2,E");
 	
 		
@@ -244,27 +243,6 @@ public class OthelloGame
 		return board; 
 	}
 	
-	public static boolean isWon(String gamename)
-	{
-		try
-		{	
-			String query = "SELECT isWon FROM game WHERE name=?";
-			PreparedStatement stmt = cnx.prepareStatement(query);
-			
-			stmt.setString(1, gamename);
-			
-			ResultSet res = stmt.executeQuery();
-			
-			if(res.next())
-				return res.getBoolean(1);
-			
-		}catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
 	public int getId() {
 		return id;
 	}
@@ -313,10 +291,6 @@ public class OthelloGame
 		this.moves = moves;
 	}
 	
-	public void setWon(boolean won) {
-		this.isWon = won;
-	}
-
 	public String getState() {
 		return state;
 	}
@@ -325,12 +299,18 @@ public class OthelloGame
 		this.state = state;
 	}
 
-	@Override
-	public String toString() 
-	{
-		return "OthelloGame [id=" + id + ", name=" + name + ", owner=" + owner + ", date=" + date + ", type=" + type
-				+ ", moves=" + moves + ", isWon=" + isWon + ", state=" + state + "]";
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+		return "OthelloGame [id=" + id + ", name=" + name + ", owner=" + owner + ", date=" + date + ", type=" + type
+				+ ", moves=" + moves + ", result=" + result + ", state=" + state + "]";
+	}
 }

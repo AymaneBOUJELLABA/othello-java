@@ -119,8 +119,11 @@ public class othelloPosition extends Position
     public String toString()
     {
         StringBuffer sb = new StringBuffer("[");
-        for (int i=0; i<64; i++) {
-            sb.append(""+board[i]+",");
+        for (int i=0; i<64; i++)
+        {
+            sb.append(""+board[i].getValue()+",");
+            if(i%8==0)
+            	sb.append("\n");
         }
         sb.append("]");
         return sb.toString();
