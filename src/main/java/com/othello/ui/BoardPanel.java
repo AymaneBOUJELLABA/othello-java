@@ -84,7 +84,7 @@ public class BoardPanel extends javax.swing.JPanel
         g2d.fillOval(getWidth() - 70, 10, getCaseWidth() - 20, getCaseHeight() - 20);
         g2d.setColor(turn == CaseValue.WHITE ? Color.black : Color.white);
         g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,  16));
-        g2d.drawString("Tour", getWidth() - 55, 35);
+        g2d.drawString("Tour", getWidth() - getCaseWidth()/2 - 5 , getCaseHeight()/2 +  3);
 
         
         g2d.translate(0, SCORE_HEIGHT);
