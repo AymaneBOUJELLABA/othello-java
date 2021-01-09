@@ -16,10 +16,18 @@ public class Case
     private CaseValue value;
     private boolean isPossibleMove;
     
+    public static Case[][] get2DTable(Case[] oldboard)
+    {
+    	Case[][] board = new Case[8][8];
+    	for(int i=0;i<64;i++)
+    		board[i/8][i%8] = oldboard[i];
+    	
+    	return board;
+    }
+    
     public static Case[] getTable(Case[][] oldboard)
     {
     	Case[] board = new Case[64];
-    	
     	for(int i=0;i<8;i++)
     		for(int j=0;j<8;j++)
     			board[(i*8)+j] = oldboard[i][j];

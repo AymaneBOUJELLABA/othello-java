@@ -5,7 +5,7 @@ import com.othello.entities.CaseValue;
 import com.othello.ui.BoardPanel;
 
 //OUR OTHELLO !!
-public class OthelloGame extends GameSearch
+public class OthelloGameAI extends GameSearch
 {	
 	BoardPanel gamepanel;
 	private int [] score = { 100, -20, 10, 5, 5, 10, -20,100,
@@ -17,12 +17,13 @@ public class OthelloGame extends GameSearch
 				            -20, -50, -2, -2, -2, -2, -50, -20,
 				            100, -20, 10, 5, 5, 10, -20,100};
 	
-	public OthelloGame(BoardPanel gamePanel)
+	public OthelloGameAI(BoardPanel gamePanel)
 	{
 		this.gamepanel = gamePanel;
 	}
-	@Override
+	
 	//CHECK IF THE BOARD IS FULL
+	@Override
 	public boolean drawnPosition(Position p)
 	{	
 		othelloPosition pos = (othelloPosition) p;
@@ -67,7 +68,6 @@ public class OthelloGame extends GameSearch
 			else if(BlankNum == 0 && player_Score < ai_Score)
 				iswon = true;
 		}
-		
 		return iswon;
 	}
 
@@ -102,7 +102,6 @@ public class OthelloGame extends GameSearch
         {
             return -(evaluation + (1.0f / 65-count));
         }
-        
         return evaluation;
 	}
 
@@ -120,7 +119,6 @@ public class OthelloGame extends GameSearch
 		
 		return null;
 	}
-	
 	//oh also this HURRY UP
 	@Override
 	public Position makeMove(Position p, boolean player, Move move)
@@ -141,7 +139,6 @@ public class OthelloGame extends GameSearch
         return ret;
 	}
 
-	
 	//YOU HAVE TO DO THIS TOO !!!
 	@Override
 	public Move createMove()

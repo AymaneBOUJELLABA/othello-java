@@ -1,5 +1,6 @@
 package com.othello.ui;
 
+import com.othello.ai.othelloPosition;
 import com.othello.classes.OthelloGame;
 import com.othello.entities.Case;
 import com.othello.entities.CaseValue;
@@ -12,6 +13,7 @@ import java.awt.event.MouseEvent;
 
 public class BoardPanel extends javax.swing.JPanel {
 
+	private othelloPosition gameState;
     public Case[][] board;
     public CaseValue turn;
     static int SCORE_HEIGHT = 75;
@@ -19,19 +21,26 @@ public class BoardPanel extends javax.swing.JPanel {
 
     public BoardPanel(Case[][] board,OthelloGame gamedata)
     {
+    	this.gameState.board = Case.getTable(board);
         this.board = board;
         this.turn = CaseValue.BLACK;
         this.gamedata = gamedata;
         initComponents();
         calculatePossibleMoves();
-        addMouseListener(new MouseAdapter(){
-            @Override 
-           public void mouseReleased(MouseEvent e) {
-                int j = e.getX() / getCaseWidth();
-                int i = (e.getY() - SCORE_HEIGHT) / getCaseHeight();
-                playTurn(i, j);
-            }
-        });
+      //if PVP
+        if(gamedata.getType()==0)
+        {
+        	addMouseListener(new MouseAdapter()
+            {
+                @Override 
+               public void mouseReleased(MouseEvent e) 
+               {
+                    int j = e.getX() / getCaseWidth();
+                    int i = (e.getY() - SCORE_HEIGHT) / getCaseHeight();
+                    playTurn(i, j);
+               }
+            });
+        }
     }
 
     @Override
@@ -147,7 +156,12 @@ public class BoardPanel extends javax.swing.JPanel {
             }
         }
     }
-
+    public othelloPosition getBoardState()
+    {
+    	gameState.board = Case.getTable(board);
+    	
+    	return this.gameState;
+    }
     public void calculatePossibleMoves()
     {
         for (int i = 0; i < 8; i++) {

@@ -104,7 +104,9 @@ public abstract class GameSearch {
     }
     public void playGame(Position startingPosition, boolean humanPlayFirst)
     {
-        if (humanPlayFirst == false) {
+    	
+        if (humanPlayFirst == false)
+        {
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
             startingPosition = (Position)v.elementAt(1);
         }
@@ -128,6 +130,7 @@ public abstract class GameSearch {
             }
             
             Move move = createMove();
+            // 
             startingPosition = makeMove(startingPosition, HUMAN, move);
             printPosition(startingPosition);
             Vector v = alphaBeta(0, startingPosition, PROGRAM);
