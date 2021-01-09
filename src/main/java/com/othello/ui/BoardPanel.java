@@ -34,6 +34,8 @@ public class BoardPanel extends javax.swing.JPanel
         
         this.gameState = new othelloPosition(this.board);
         
+        System.out.println("othello pos :\n"+  gameState);
+        
         initComponents();
         calculatePossibleMoves(this.board,turn);
       //if PVP
@@ -125,7 +127,8 @@ public class BoardPanel extends javax.swing.JPanel
         board[i][j].setValue(turn);
         gamedata.addMove(turn,i,j);
         flipPieces(i, j);
-        switchTurn();        
+        switchTurn();
+        repaint();
         calculatePossibleMoves(this.board,turn);
         repaint();
         
@@ -133,9 +136,12 @@ public class BoardPanel extends javax.swing.JPanel
         {
         	System.out.println("Ai will play at : ");
         	othelloPosition pos = new othelloPosition(board);
-
+            repaint();
         	ai.playturn(pos, false);
+        	this.switchTurn();
         }
+        repaint();
+
     }
 
     public void switchTurn() {
@@ -194,6 +200,7 @@ public class BoardPanel extends javax.swing.JPanel
                 }
                 
                 boolean possible = checkCase(i, j,turn);
+                System.out.println(i+","+j+" possible :" + possible);
                 board[i][j].setIsPossibleMove(possible);
                 
                 if(possible)
@@ -209,7 +216,13 @@ public class BoardPanel extends javax.swing.JPanel
             {
             	if(board[i][j].isPossibleMove())
             	{
-            		positions[k++] = new othelloPosition(board,i,j,turn);
+            		if(k<positions.length)
+            		{
+            			positions[k] = new othelloPosition(Case.cloneBoard(board),i,j,turn);
+                		System.out.println("positions : l =" +positions.length + " \nposition "+k+" : \n"+positions[k] );
+                		k++;
+            		}
+            		
             	}
             	
             }

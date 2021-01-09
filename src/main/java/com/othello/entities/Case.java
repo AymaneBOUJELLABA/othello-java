@@ -25,6 +25,17 @@ public class Case
     	return board;
     }
     
+    public static Case[][] cloneBoard(Case[][] oldboard)
+    {
+    	Case[][] board = new Case[8][8];
+    	
+    	for(int i=0;i<8;i++)
+    		for(int j=0;j<8;j++)
+    			board[i][j] = new Case(oldboard[i][j].getIndexX(), oldboard[i][j].getIndexY(), oldboard[i][j].getValue());
+    
+    	return board;
+    }
+    
     public static Case[] getTable(Case[][] oldboard)
     {
     	Case[] board = new Case[64];

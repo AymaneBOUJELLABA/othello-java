@@ -25,10 +25,8 @@ public class othelloPosition extends Position
         defaultBoard[4][4].setValue(CaseValue.WHITE);
         defaultBoard[4][3].setValue(CaseValue.BLACK);
         
-        
         board = Case.getTable(defaultBoard);
     }
-    
     
     public othelloPosition(Case[][] CaseBoard)
     {
@@ -42,7 +40,6 @@ public class othelloPosition extends Position
         board[(i*8)+j].setValue(CaseValue.WHITE);
         
         board = Case.getTable(this.flipPieces(turn,i, j));
-        
     }
     
     public Case[][] flipPieces(CaseValue turn,int row, int col)
