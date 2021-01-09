@@ -123,11 +123,25 @@ public class BoardPanel extends javax.swing.JPanel {
                     continue;
                 }
                 if (checkDir(row, col, dRow, dCol)) {
+                    int lastI = 1000, lastJ = 1000;
+                    for (int i = row + dRow, j = col + dCol; i < 8 && i >= 0 && j < 8 && j >= 0; i += dRow, j += dCol) {
+                        if (board[i][j].isEmpty()) {
+                            break;
+                        }
+                        if(board[i][j].getValue() == turn){
+                            lastI = i;
+                            lastJ = j;
+                        }
+                    }
+                    
                     for (int i = row + dRow, j = col + dCol; i < 8 && i >= 0 && j < 8 && j >= 0; i += dRow, j += dCol) {
                         if (board[i][j].isEmpty()) {
                             break;
                         }
                         board[i][j].setValue(turn);
+                        if(lastI == i && lastJ == j){
+                            break;
+                        }
                     }
                 }
             }
