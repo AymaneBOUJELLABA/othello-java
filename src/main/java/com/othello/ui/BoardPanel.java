@@ -12,12 +12,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 
 public class BoardPanel extends javax.swing.JPanel
 {
 
-	private OthelloGameAI ai;
-	private othelloPosition gameState;
+    private OthelloGameAI ai;
+    private othelloPosition gameState;
     private Case[][] board;
     public CaseValue turn;
     static int SCORE_HEIGHT = 75;
@@ -34,7 +35,6 @@ public class BoardPanel extends javax.swing.JPanel
         
         this.gameState = new othelloPosition(this.board);
         
-        System.out.println("othello pos :\n"+  gameState);
         
         initComponents();
         calculatePossibleMoves(this.board,turn);
@@ -106,6 +106,11 @@ public class BoardPanel extends javax.swing.JPanel
 
                 g2d.setColor(board[i][j].getValue() == CaseValue.BLACK ? Color.black : Color.white);
                 g2d.fillOval(x + 10, y + 10, getCaseWidth() - 20, getCaseHeight() - 20);
+                
+                if(board[i][j].isIsLastMove()){
+                    g2d.setColor(Color.red);
+                    g2d.fillOval(x + 10 + getCaseWidth()/2 - getCaseWidth()/5 , y + 10 + getCaseHeight()/2 - getCaseHeight()/5 , getCaseWidth()/5, getCaseHeight()/5);
+                }
             }
         }
     }
@@ -120,28 +125,50 @@ public class BoardPanel extends javax.swing.JPanel
     
     public void playTurn(int i, int j)
     {
-    	System.out.println("Turn  " + turn);
         if (!isSafe(i, j) || !board[i][j].isEmpty() || !board[i][j].isPossibleMove()) {
             return;
         }
-        board[i][j].setValue(turn);
-        gamedata.addMove(turn,i,j);
-        flipPieces(i, j);
-        switchTurn();
-        repaint();
-        calculatePossibleMoves(this.board,turn);
-        repaint();
-        
-        if(gamedata.getType() == 1 && turn==CaseValue.WHITE)
+        for (int k = 0; k < 8; k++)
         {
-        	System.out.println("Ai will play at : ");
-        	othelloPosition pos = new othelloPosition(board);
-            repaint();
-        	ai.playturn(pos, false);
-        	this.switchTurn();
+            for (int m = 0; m < 8; m++)
+            {
+                board[k][m].setIsLastMove(false);
+            }
+        }
+        board[i][j].setValue(turn);
+        board[i][j].setIsLastMove(true);
+        for (int k = 0; k < 8; k++)
+        {
+            for (int m = 0; m < 8; m++)
+            {
+                board[k][m].setIsPossibleMove(false);
+            }
         }
         repaint();
-
+        Thread thread = new Thread(){
+            public void run(){
+                synchronized(board){
+                    gamedata.addMove(turn,i,j);
+                    flipPieces(i, j);
+                    switchTurn();
+                    repaint();
+                    if(gamedata.getType() == 1 && turn==CaseValue.WHITE)
+                    {
+                        othelloPosition pos = new othelloPosition(Case.cloneBoard(board));
+                        repaint();
+                        ai.playturn(pos, false);
+                        switchTurn();
+                    }
+                    calculatePossibleMoves(board,turn);
+                    repaint();
+                }
+            }
+        };
+        if(checkGameState()){
+            return;
+        }
+        thread.start();
+        
     }
 
     public void switchTurn() {
@@ -149,6 +176,13 @@ public class BoardPanel extends javax.swing.JPanel
     }
 
     public void flipPieces(int row, int col) {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                board[i][j].setIsFlipped(false);
+            }
+        }
         for (int dRow = -1; dRow <= 1; dRow++) {
             for (int dCol = -1; dCol <= 1; dCol++) {
 
@@ -172,6 +206,7 @@ public class BoardPanel extends javax.swing.JPanel
                             break;
                         }
                         board[i][j].setValue(turn);
+                        board[i][j].setIsFlipped(true);
                         if(lastI == i && lastJ == j){
                             break;
                         }
@@ -187,9 +222,28 @@ public class BoardPanel extends javax.swing.JPanel
     	return this.gameState;
     }
     
+    public boolean checkGameState(){
+        int count = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if(board[i][j].isPossibleMove())
+                    count++;
+            }
+        }
+        
+        if(count == 0){
+            gameFinished();
+            return true;
+        }
+        
+        return false;
+    }
+    
     public Position[] calculatePossibleMoves(Case[][] board,CaseValue turn)
     {	
-    	int count =0;
+    	int count = 0;
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
@@ -200,11 +254,10 @@ public class BoardPanel extends javax.swing.JPanel
                 }
                 
                 boolean possible = checkCase(i, j,turn);
-                System.out.println(i+","+j+" possible :" + possible);
                 board[i][j].setIsPossibleMove(possible);
                 
                 if(possible)
-                	count++;
+                    count++;
             }
         }
         
@@ -216,13 +269,11 @@ public class BoardPanel extends javax.swing.JPanel
             {
             	if(board[i][j].isPossibleMove())
             	{
-            		if(k<positions.length)
-            		{
-            			positions[k] = new othelloPosition(Case.cloneBoard(board),i,j,turn);
-                		System.out.println("positions : l =" +positions.length + " \nposition "+k+" : \n"+positions[k] );
-                		k++;
-            		}
-            		
+                    if(k<positions.length)
+                    {
+                            positions[k] = new othelloPosition(Case.cloneBoard(board),i,j,turn);
+                            k++;
+                    }
             	}
             	
             }
@@ -252,14 +303,11 @@ public class BoardPanel extends javax.swing.JPanel
             if (board[i][j].isEmpty()) {
                 return false;
             }
-            if (!isSafe(i + dRow, j + dCol)) {
-                continue;
-            }
 
             if (board[i][j].getValue() != turn) {
                 foundOther = true;
             }
-            if (board[i + dRow][j + dCol].isEmpty() && board[i][j].getValue() == turn && foundOther) {
+            if (board[i][j].getValue() == turn && foundOther) {
                 return true;
             }
         }
@@ -286,13 +334,50 @@ public class BoardPanel extends javax.swing.JPanel
     }
     public void setBoard(Position p)
     {
-    	othelloPosition pos = (othelloPosition) p;
+        othelloPosition pos = (othelloPosition) p;
+
+        Case[][] newBoard = Case.get2DTable(pos.board);
+        
+        int lastI = 100, lastJ = 100;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                this.board[i][j].setIsLastMove(false);
+                if(newBoard[i][j].getValue() != board[i][j].getValue() && !newBoard[i][j].isIsFlipped()){
+                    System.out.println("AI will play at " + i + ", " + j);
+                    this.gamedata.addMove(CaseValue.WHITE, i, j);
+                    lastI = i;
+                    lastJ = j;
+                }
+            }
+        }
     	
     	this.board = Case.get2DTable(pos.board);
-    	
+    	if(lastI < 8 && lastJ < 8)
+            this.board[lastI][lastJ].setIsLastMove(true);
     	gamedata.setStatefromBoard(board);
     	gameState.board = Case.getTable(board);
     	repaint();
+        
+        
+        if(checkGameState()){
+            return;
+        }
+    }
+    
+    public void gameFinished(){
+        int whiteCount = getBoardCount(CaseValue.WHITE), blackCount = getBoardCount(CaseValue.BLACK);
+        
+        String message;
+        if(whiteCount == blackCount){
+            message = "Le jeu était un match nul!";
+        }else{
+            message =  "Le " + (blackCount > whiteCount ? "noir" : "blanc") + " était victorieux!";
+        }
+        
+        if(this.gamedata.getType() == 1 && blackCount > whiteCount)
+            message += "Bien joue!";
+        
+        JOptionPane.showMessageDialog(this, message);
     }
     /**
      * This method is called from within the constructor to initialize the form.

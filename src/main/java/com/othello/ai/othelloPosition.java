@@ -45,6 +45,13 @@ public class othelloPosition extends Position
     public Case[][] flipPieces(CaseValue turn,int row, int col)
     {
     	Case[][] board = Case.get2DTable(this.board);
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                board[i][j].setIsFlipped(false);
+            }
+        }
     	
         for (int dRow = -1; dRow <= 1; dRow++)
         {
@@ -75,6 +82,7 @@ public class othelloPosition extends Position
                             break;
                         }
                         board[i][j].setValue(turn);
+                        board[i][j].setIsFlipped(true);
                         if(lastI == i && lastJ == j){
                             break;
                         }
@@ -94,14 +102,10 @@ public class othelloPosition extends Position
             if (board[i][j].isEmpty()) {
                 return false;
             }
-            if (!isSafe(i + dRow, j + dCol)) {
-                continue;
-            }
-
             if (board[i][j].getValue() != turn) {
                 foundOther = true;
             }
-            if (board[i + dRow][j + dCol].isEmpty() && board[i][j].getValue() == turn && foundOther) {
+            if (board[i][j].getValue() == turn && foundOther) {
                 return true;
             }
         }
