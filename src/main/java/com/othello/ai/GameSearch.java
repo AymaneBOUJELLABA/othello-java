@@ -4,16 +4,6 @@ import java.util.*;
 public abstract class GameSearch {
 
     public static final boolean DEBUG = false;
-
-    /*
-     * Note: the abstract Position also needs to be
-     *       subclassed to write a new game program.
-     */
-    /*
-     * Note: the abstract class Move also needs to be subclassed.
-     *       
-     */
-
     public static boolean PROGRAM = false;
     public static boolean HUMAN = true;
 
@@ -44,8 +34,7 @@ public abstract class GameSearch {
         return v;
     }
 
-    protected Vector alphaBetaHelper(int depth, Position p,
-    									boolean player, float alpha, float beta)
+    protected Vector alphaBetaHelper(int depth, Position p,boolean player, float alpha, float beta)
     {
         if (GameSearch.DEBUG) System.out.println("alphaBetaHelper("+depth+","+p+","+alpha+","+beta+")");
         if (reachedMaxDepth(p, depth))

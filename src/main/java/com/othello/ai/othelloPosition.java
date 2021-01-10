@@ -6,9 +6,7 @@ import com.othello.entities.CaseValue;
 public class othelloPosition extends Position
 {
     public Case[] board = new Case[64];
-    
-
-    
+   
     public othelloPosition()
     {
     	Case[][] defaultBoard = new Case[8][8];
@@ -90,7 +88,6 @@ public class othelloPosition extends Position
                 }
             }
         }
-        
         return board;
     }
     private boolean checkDir(CaseValue turn,Case[][] board,int row, int col, int dRow, int dCol)

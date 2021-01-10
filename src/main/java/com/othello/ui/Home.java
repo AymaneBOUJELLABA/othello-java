@@ -309,7 +309,7 @@ public class Home extends javax.swing.JFrame
         gamelistPanel.setLayout(new BorderLayout());
         
         // Data to be displayed in the JTable 
-        String[][] data = new String[games.size()][3];
+        String[][] data = new String[games.size()][4];
         
         for(int i=0; i<games.size();i++)
         {
@@ -317,11 +317,12 @@ public class Home extends javax.swing.JFrame
         	
         	data[i][0] = newgame.getName();
         	data[i][1] = newgame.getResult();
-        	data[i][2] = newgame.getType() == 0? "Player v Player" : "Player v AI";
+        	data[i][3] = newgame.getType() == 0? "Player v Player" : "Player v AI";
+        	data[i][2] = newgame.getMoves();
         }
        
         // Column Names 
-        String[] columnNames = {"Game Name","Game State","Game Type"}; 
+        String[] columnNames = {"Game Name","Game State","Game moves","Game Type"}; 
   
         // Initializing the JTable 
         JTable j = new JTable(data, columnNames); 

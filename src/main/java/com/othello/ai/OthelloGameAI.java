@@ -8,7 +8,8 @@ import com.othello.entities.CaseValue;
 import com.othello.ui.BoardPanel;
 
 //OUR OTHELLO !!
-public class OthelloGameAI extends GameSearch {
+public class OthelloGameAI extends GameSearch 
+{
 
     BoardPanel gamepanel;
     private int[] score = {100, -20, 10, 5, 5, 10, -20, 100,
